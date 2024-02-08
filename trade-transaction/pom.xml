@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.example</groupId>
+        <artifactId>trade-parent</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../trade-parent</relativePath>
+    </parent>
+    <groupId>com.example</groupId>
+    <artifactId>trade-transaction</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>trade-transaction</name>
+    <description>trade-transaction</description>
+    <packaging>pom</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>trade-base</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
+    <modules>
+        <module>trade-transaction-api</module>
+        <module>trade-transaction-model</module>
+        <module>trade-transaction-service</module>
+    </modules>
+
+</project>

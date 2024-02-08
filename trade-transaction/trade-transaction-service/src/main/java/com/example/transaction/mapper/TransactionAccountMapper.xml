@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.transaction.mapper.TransactionAccountMapper">
+    <select id="selectBalanceByUserId" resultType="BigDecimal">
+        select balance
+        from transaction_account
+        where user_id = #{uid}
+    </select>
+
+    <select id="selectDefaultBrokerageByUserId" resultType="int">
+        select default_brokerage
+        from transaction_account
+        where user_id = #{uid}
+    </select>
+
+    <update id="updateBalanceByUserId">
+        update transaction_account
+        set balance = #{balance}
+        where user_id = #{uid}
+    </update>
+</mapper>

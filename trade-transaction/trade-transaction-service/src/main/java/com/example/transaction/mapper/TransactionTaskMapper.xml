@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.transaction.mapper.TransactionTaskMapper">
+    <select id="selectTaskListByUserId" resultType="com.example.transaction.model.po.TransactionTask">
+        select * from transaction_task
+        where user_id = #{uid}
+    </select>
+
+    <select id="selectTaskListByStatusAndType" resultType="com.example.transaction.model.po.TransactionTask">
+        select * from transaction_task
+        where transaction_status = #{status}
+        and transaction_type = #{type}
+    </select>
+
+    <select id="selectTaskByTaskId" resultType="com.example.transaction.model.po.TransactionTask">
+        select * from transaction_task
+        where task_id = #{tid}
+    </select>
+
+    <insert id="insertTask">
+        insert into transaction_task (user_id, security_code, transaction_date, transaction_type, transaction_price, transaction_volume, transaction_status)
+        values (#{userId}, #{securityCode}, #{transactionDate}, #{transactionType}, #{transactionPrice}, #{transactionVolume}, "active")
+    </insert>
+
+    <update id="updateTaskStatusById">
+        update transaction_task
+        set transaction_status = #{status}
+        where task_id = #{tid}
+    </update>
+
+    <delete id="deleteTaskById">
+        delete from transaction_task
+        where task_id = #{tid}
+    </delete>
+</mapper>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.transaction.mapper.TransactionPositionMapper">
+    <select id="selectPositionListByUserId" resultType="com.example.transaction.model.po.TransactionPosition">
+        select *
+        from transaction_position
+        where user_id = #{uid}
+    </select>
+
+    <select id="selectPositionListByUserIdAndStatus" resultType="com.example.transaction.model.po.TransactionPosition">
+        select *
+        from transaction_position
+        where user_id = #{uid}
+        and transaction_status = #{status}
+    </select>
+
+    <select id="selectPositionByUserIdAndCode" resultType="com.example.transaction.model.po.TransactionPosition">
+        select *
+        from transaction_position
+        where user_id = #{uid}
+        and security_code = #{code}
+    </select>
+
+    <insert id="insertPosition">
+        insert into transaction_position (user_id, security_code, position_quantity, position_cost, position_status)
+        values (#{userId}, #{securityCode}, #{positionQuantity}, #{positionCost}, "active")
+    </insert>
+
+    <update id="updatePosition">
+        update transaction_position
+        set position_quantity = #{positionQuantity},
+        position_cost = #{positionCost}
+        where user_id = #{userId}
+        and security_code = #{securityCode}
+    </update>
+
+    <update id="updatePositionStatus">
+        update transaction_position
+        set position_status = #{status}
+        where position_id = #{pid}
+    </update>
+</mapper>
