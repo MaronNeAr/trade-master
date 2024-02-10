@@ -38,7 +38,6 @@ public class LoginController {
 
 
     @RequestMapping("/user/{id}")
-
     public User getuser(@PathVariable("id") String id) {
         User user = userMapper.selectById(id);
         return user;
@@ -68,4 +67,16 @@ public class LoginController {
     public void register(@RequestBody RegisterDto registerDto) {
         verifyService.register(registerDto);
     }
+
+//    @ApiOperation(value = "注册", tags = "注册")
+//    @PostMapping("/register")
+//    public void register(@RequestBody RegisterDto registerDto) {
+//        verifyService.register(registerDto);
+//    }
+//
+//    @ApiOperation(value = "登录", tags = "登录")
+//    @PostMapping("/login")
+//    public void login(@RequestBody RegisterDto registerDto) {
+//        verifyService.register(registerDto);
+//    }
 }

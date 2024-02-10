@@ -67,11 +67,11 @@ public class VerifyServiceImpl implements VerifyService {
     public void register(RegisterDto registerDto) {
         String uuid = UUID.randomUUID().toString();
         String email = registerDto.getEmail();
-        String checkcode = registerDto.getCheckcode();
-        Boolean verify = verify(email, checkcode);
-        if (!verify) {
-            throw new RuntimeException("验证码输入错误");
-        }
+//        String checkcode = registerDto.getCheckcode();
+//        Boolean verify = verify(email, checkcode);
+//        if (!verify) {
+//            throw new RuntimeException("验证码输入错误");
+//        }
         String password = registerDto.getPassword();
         String confirmpwd = registerDto.getConfirmpwd();
         if (!password.equals(confirmpwd)) {
