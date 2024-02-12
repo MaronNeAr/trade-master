@@ -57,15 +57,15 @@ public class UserDetailsImpl implements UserDetailsService {
         // 获取用户id
         String userId = user.getId();
         // 根据用户id查询用户权限
-        List<Menu> xcMenus = MenuMapper.selectPermissionByUserId(userId);
+        List<Menu> menus = MenuMapper.selectPermissionByUserId(userId);
         ArrayList<String> permissions = new ArrayList<>();
         // 没权限，给一个默认的
-        if (xcMenus.isEmpty()) {
+        if (menus.isEmpty()) {
             permissions.add("test");
         } else {
             // 获取权限，加入到集合里
-            xcMenus.forEach(xcMenu -> {
-                permissions.add(xcMenu.getCode());
+            menus.forEach(menu -> {
+                permissions.add(menu.getCode());
             });
         }
         // 设置权限

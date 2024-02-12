@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,6 +44,12 @@ public class LoginController {
         return user;
     }
 
+    @GetMapping("/r/info")
+    public Object getUserInfo() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return principal;
+    }
+
     @RequestMapping("/r/r1")
     @PreAuthorize("hasAuthority('p1')")
     public String r1() {
@@ -67,16 +74,4 @@ public class LoginController {
     public void register(@RequestBody RegisterDto registerDto) {
         verifyService.register(registerDto);
     }
-
-//    @ApiOperation(value = "注册", tags = "注册")
-//    @PostMapping("/register")
-//    public void register(@RequestBody RegisterDto registerDto) {
-//        verifyService.register(registerDto);
-//    }
-//
-//    @ApiOperation(value = "登录", tags = "登录")
-//    @PostMapping("/login")
-//    public void login(@RequestBody RegisterDto registerDto) {
-//        verifyService.register(registerDto);
-//    }
 }

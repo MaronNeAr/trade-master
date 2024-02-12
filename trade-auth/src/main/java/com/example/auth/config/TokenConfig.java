@@ -24,6 +24,7 @@ public class TokenConfig {
 
     @Autowired
     TokenStore tokenStore;
+
     @Autowired
     private JwtAccessTokenConverter accessTokenConverter;
 

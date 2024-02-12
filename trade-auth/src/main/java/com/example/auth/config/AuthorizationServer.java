@@ -36,7 +36,7 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
         clients.inMemory()// 使用in-memory存储
                 .withClient("TradeWebApp")// client_id
                 .secret(new BCryptPasswordEncoder().encode("TradeWebApp"))//客户端密钥
-                .resourceIds("xuecheng-plus")//资源列表
+                .resourceIds("trade-server")//资源列表
                 .authorizedGrantTypes("authorization_code", "password", "client_credentials", "implicit", "refresh_token")// 该client允许的授权类型authorization_code,password,refresh_token,implicit,client_credentials
                 .scopes("all")// 允许的授权范围
                 .autoApprove(false)//false跳转到授权页面
