@@ -32,7 +32,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int transfer(Integer uid, Integer bid, BigDecimal amount) {
+    public int transfer(String uid, Integer bid, BigDecimal amount) {
         balanceLock.lock();
         try {
             BigDecimal balance = accountMapper.selectBalanceByUserId(uid);
@@ -59,7 +59,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public int withdraw(Integer uid, Integer bid, BigDecimal amount) {
+    public int withdraw(String uid, Integer bid, BigDecimal amount) {
         brokerageBalanceLock.lock();
         try {
             BigDecimal brokerageBalance = brokerageAccountMapper.selectBrokerageBalance(uid, bid);
@@ -78,6 +78,11 @@ public class AccountServiceImpl implements AccountService {
             balanceLock.unlock();
         }
         return 1;
+    }
+
+    @Override
+    public BigDecimal getBalance(String uid) {
+        return accountMapper.selectBalanceByUserId(uid);
     }
 
     @Override

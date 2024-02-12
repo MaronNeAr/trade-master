@@ -7,9 +7,9 @@ import java.math.BigDecimal;
 
 public interface TransactionService {
 
-    int buy(int uid, String code, BigDecimal price, int volume);
+    int buy(String uid, String code, BigDecimal price, int volume);
 
-    int sell(int uid, String code, BigDecimal price, int volume);
+    int sell(String uid, String code, BigDecimal price, int volume);
 
     int buyCancel(Integer taskId);
 

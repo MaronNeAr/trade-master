@@ -7,11 +7,11 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface TransactionBrokerageAccountMapper {
-    List<TransactionBrokerageAccount> selectBrokerageAccountByUserId(@Param("uid") Integer uid);
+    List<TransactionBrokerageAccount> selectBrokerageAccountByUserId(@Param("uid") String uid);
 
-    BigDecimal selectBrokerageBalance(@Param("uid") Integer uid, @Param("bid") Integer bid);
+    BigDecimal selectBrokerageBalance(@Param("uid") String uid, @Param("bid") Integer bid);
 
-    int updateBrokerageBalance(@Param("uid") Integer uid, @Param("bid") Integer bid, @Param("balance") BigDecimal balance);
+    int updateBrokerageBalance(@Param("uid") String uid, @Param("bid") Integer bid, @Param("balance") BigDecimal balance);
 
     int insertBrokerageAccount(TransactionBrokerageAccount brokerageAccount);
 }

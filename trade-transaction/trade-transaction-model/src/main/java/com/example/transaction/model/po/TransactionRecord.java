@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 @Data
 public class TransactionRecord {
     private Integer recordId;
-    private Integer userId;
+    private String userId;
     private String securityCode;
     private Timestamp transactionDate;
     private String transactionType;
@@ -18,7 +18,7 @@ public class TransactionRecord {
     public TransactionRecord() {
     }
 
-    public TransactionRecord(Integer recordId, Integer userId, String securityCode, Timestamp transactionDate, String transactionType, BigDecimal transactionPrice, Integer transactionVolume) {
+    public TransactionRecord(Integer recordId, String userId, String securityCode, Timestamp transactionDate, String transactionType, BigDecimal transactionPrice, Integer transactionVolume) {
         this.recordId = recordId;
         this.userId = userId;
         this.securityCode = securityCode;

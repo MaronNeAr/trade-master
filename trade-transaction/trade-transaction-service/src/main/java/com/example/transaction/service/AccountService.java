@@ -7,9 +7,11 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface AccountService {
-    int transfer(Integer uid, Integer bid, BigDecimal amount);
+    int transfer(String uid, Integer bid, BigDecimal amount);
 
-    int withdraw(Integer uid, Integer bid, BigDecimal amount);
+    int withdraw(String uid, Integer bid, BigDecimal amount);
+
+    BigDecimal getBalance(String uid);
 
     List<TransactionBrokerage> getBrokerageList();
 }

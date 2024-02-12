@@ -35,7 +35,7 @@ public class TransactionExecutionTests {
 
     @Test
     public void test02() {
-        List<TransactionTask> tasks1 = taskMapper.selectTaskListByUserId(1);
+        List<TransactionTask> tasks1 = taskMapper.selectTaskListByUserId("1");
         System.out.println(tasks1);
         List<TransactionTask> tasks2 = taskMapper.selectTaskListByStatusAndType("active", "buy");
         System.out.println(tasks2);

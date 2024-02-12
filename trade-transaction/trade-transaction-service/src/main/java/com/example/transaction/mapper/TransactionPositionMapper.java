@@ -6,11 +6,11 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface TransactionPositionMapper {
-    List<TransactionPosition> selectPositionListByUserId(@Param("uid") Integer uid);
+    List<TransactionPosition> selectPositionListByUserId(@Param("uid") String uid);
 
-    List<TransactionPosition> selectPositionListByUserIdAndStatus(@Param("uid") Integer uid, @Param("status") String status);
+    List<TransactionPosition> selectPositionListByUserIdAndStatus(@Param("uid") String uid, @Param("status") String status);
 
-    TransactionPosition selectPositionByUserIdAndCode(@Param("uid") Integer uid, @Param("code") String code);
+    TransactionPosition selectPositionByUserIdAndCode(@Param("uid") String uid, @Param("code") String code);
 
     int insertPosition(TransactionPosition position);
 

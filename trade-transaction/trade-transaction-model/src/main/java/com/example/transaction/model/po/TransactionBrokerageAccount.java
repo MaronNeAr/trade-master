@@ -6,11 +6,11 @@ import java.math.BigDecimal;
 @Data
 public class TransactionBrokerageAccount {
     private Integer brokerageAccountId;
-    private Integer userId;
+    private String userId;
     private Integer brokerageId;
     private BigDecimal balance;
 
-    public TransactionBrokerageAccount(Integer brokerageAccountId, Integer userId, Integer brokerageId, BigDecimal balance) {
+    public TransactionBrokerageAccount(Integer brokerageAccountId, String userId, Integer brokerageId, BigDecimal balance) {
         this.brokerageAccountId = brokerageAccountId;
         this.userId = userId;
         this.brokerageId = brokerageId;

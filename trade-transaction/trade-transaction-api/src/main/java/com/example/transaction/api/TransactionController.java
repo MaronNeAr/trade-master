@@ -2,8 +2,10 @@ package com.example.transaction.api;
 
 import com.example.transaction.config.common.ErrorMessage;
 import com.example.transaction.config.common.SuccessMessage;
+import com.example.transaction.service.AuthService;
 import com.example.transaction.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,14 +18,18 @@ public class TransactionController {
     @Autowired
     TransactionService transactionService;
 
+    @Autowired
+    AuthService authService;
+
     @PostMapping("/buy")
     public Object buy(HttpServletRequest req) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String uid = authService.getUidByPrincipal(principal);
         String code = req.getParameter("code");
         String price = req.getParameter("price");
         String volume = req.getParameter("volume");
         if (code == null || price == null || volume == null) return new ErrorMessage("参数缺失，请至少键入证券代码、买入价格、买入量").getMessage();
         try {
-            int uid = 1;
             if (Integer.valueOf(volume) % 100 != 0) return new ErrorMessage("买入量至少为一手，即100股").getMessage();
             int state = transactionService.buy(uid, code, new BigDecimal(Integer.valueOf(price)), Integer.valueOf(volume));
             if (state == -1) return new ErrorMessage("您的账户余额不足").getMessage();
@@ -37,12 +43,13 @@ public class TransactionController {
 
     @PostMapping("/sell")
     public Object sellCurrency(HttpServletRequest req) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String uid = authService.getUidByPrincipal(principal);
         String code = req.getParameter("code");
         String price = req.getParameter("price");
         String volume = req.getParameter("volume");
         if (code == null || price == null || volume == null) return new ErrorMessage("参数缺失，请至少键入证券代码、卖出价格、卖出量").getMessage();
         try {
-            int uid = 1;
             if (Integer.valueOf(volume) % 100 != 0) return new ErrorMessage("卖出量至少为一手，即100股").getMessage();
             int state = transactionService.sell(uid, code, new BigDecimal(Integer.valueOf(price)), Integer.valueOf(volume));
             if (state == -1) return new ErrorMessage("您的" + code + "持仓量不足").getMessage();

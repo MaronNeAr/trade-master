@@ -36,7 +36,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int buy(int uid, String code, BigDecimal price, int volume) {
+    public int buy(String uid, String code, BigDecimal price, int volume) {
         BigDecimal cost = price.multiply(new BigDecimal(volume));
         int defaultBid = accountMapper.selectDefaultBrokerageByUserId(uid);
 
@@ -55,7 +55,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int sell(int uid, String code, BigDecimal price, int volume) {
+    public int sell(String uid, String code, BigDecimal price, int volume) {
         positionLock.lock();
         try{
             TransactionPosition position = positionMapper.selectPositionByUserIdAndCode(uid, code);

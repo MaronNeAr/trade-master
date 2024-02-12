@@ -20,7 +20,7 @@ public class TransactionUnitApplicationTests {
 
     @Test
     public void Test02() throws IOException {
-        TransactionRecord record = new TransactionRecord(2, 1, "sh600000", new Timestamp(100432423), "buy",new BigDecimal(6.54), 100);
+        TransactionRecord record = new TransactionRecord(2, "1", "sh600000", new Timestamp(100432423), "buy",new BigDecimal(6.54), 100);
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonString = objectMapper.writeValueAsString(record);
         TransactionRecord obj = objectMapper.readValue(jsonString, TransactionRecord.class);

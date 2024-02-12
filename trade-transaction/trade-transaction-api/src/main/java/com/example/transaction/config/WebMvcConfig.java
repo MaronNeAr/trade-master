@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-@Configuration
+//@Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
 
@@ -16,6 +16,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 // 放行全部请求类型
                 .allowedMethods("*")
                 // .allowedMethods("GET", "POST", "DELETE", "PUT")
+                .allowedHeaders("*")
                 // 是否发送Cookie
                 .allowCredentials(true)
                 //暴露哪些头部信息

@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface TransactionTaskMapper {
-    List<TransactionTask> selectTaskListByUserId(@Param("uid") Integer uid);
+    List<TransactionTask> selectTaskListByUserId(@Param("uid") String uid);
 
     List<TransactionTask> selectTaskListByStatusAndType(@Param("status") String status, @Param("type") String type);
 
