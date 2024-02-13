@@ -21,7 +21,7 @@ public class TransactionController {
     @Autowired
     AuthService authService;
 
-    @PostMapping("/buy")
+    @PostMapping("/r/buy")
     public Object buy(HttpServletRequest req) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String uid = authService.getUidByPrincipal(principal);
@@ -41,7 +41,7 @@ public class TransactionController {
         }
     }
 
-    @PostMapping("/sell")
+    @PostMapping("/r/sell")
     public Object sellCurrency(HttpServletRequest req) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String uid = authService.getUidByPrincipal(principal);

@@ -3,10 +3,11 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.transaction.mapper.TransactionBrokerageAccountMapper">
-    <select id="selectBrokerageAccountByUserId" resultType="com.example.transaction.model.po.TransactionBrokerageAccount">
-        select *
-        from transaction_brokerage_account
-        where user_id = #{uid}
+    <select id="selectBrokerageAccountByUserId" resultType="com.example.transaction.model.dto.TransactionBrokerageAccountDTO">
+        select BA.balance, B.brokerage_name
+        from transaction_brokerage_account BA, transaction_brokerage B
+        where BA.brokerage_id = B.brokerage_id
+        and user_id = #{uid}
     </select>
 
     <select id="selectBrokerageBalance" resultType="BigDecimal">

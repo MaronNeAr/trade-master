@@ -52,7 +52,7 @@ public class MarketController {
 
     }
 
-    @PostMapping("query/list")
+    @PostMapping("query/securities")
     public Object querySecurityGroup(HttpServletRequest req) {
         try {
             String type = req.getParameter("type");

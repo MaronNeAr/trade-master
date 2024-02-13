@@ -3,6 +3,7 @@ package com.example.transaction.service.impl;
 import com.example.transaction.mapper.TransactionAccountMapper;
 import com.example.transaction.mapper.TransactionBrokerageAccountMapper;
 import com.example.transaction.mapper.TransactionBrokerageMapper;
+import com.example.transaction.model.dto.TransactionBrokerageAccountDTO;
 import com.example.transaction.model.po.TransactionBrokerage;
 import com.example.transaction.model.po.TransactionBrokerageAccount;
 import com.example.transaction.service.AccountService;
@@ -81,7 +82,18 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public BigDecimal getBalance(String uid) {
+    public int getDefaultBrokerage(String uid) {
+        try {
+            return accountMapper.selectDefaultBrokerageByUserId(uid);
+        } catch (Exception e) {
+            System.out.println(e);
+            return -1;
+        }
+
+    }
+
+    @Override
+    public BigDecimal getAccountBalance(String uid) {
         return accountMapper.selectBalanceByUserId(uid);
     }
 
@@ -90,4 +102,8 @@ public class AccountServiceImpl implements AccountService {
         return brokerageMapper.selectBrokerageList();
     }
 
+    @Override
+    public List<TransactionBrokerageAccountDTO> getBrokerageAccountByUserId(String uid) {
+        return brokerageAccountMapper.selectBrokerageAccountByUserId(uid);
+    }
 }

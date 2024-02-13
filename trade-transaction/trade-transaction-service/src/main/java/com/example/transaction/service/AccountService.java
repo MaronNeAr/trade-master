@@ -1,6 +1,8 @@
 package com.example.transaction.service;
 
+import com.example.transaction.model.dto.TransactionBrokerageAccountDTO;
 import com.example.transaction.model.po.TransactionBrokerage;
+import com.example.transaction.model.po.TransactionBrokerageAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
@@ -11,7 +13,11 @@ public interface AccountService {
 
     int withdraw(String uid, Integer bid, BigDecimal amount);
 
-    BigDecimal getBalance(String uid);
+    int getDefaultBrokerage(String uid);
+
+    BigDecimal getAccountBalance(String uid);
 
     List<TransactionBrokerage> getBrokerageList();
+
+    List<TransactionBrokerageAccountDTO> getBrokerageAccountByUserId(String uid);
 }
