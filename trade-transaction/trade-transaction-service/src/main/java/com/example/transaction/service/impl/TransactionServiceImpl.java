@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
 @Service
@@ -121,5 +122,20 @@ public class TransactionServiceImpl implements TransactionService {
         }
         taskMapper.insertTask(task);
         return 1;
+    }
+
+    @Override
+    public List<TransactionPosition> getActivePositions(String uid) {
+        return positionMapper.selectPositionListByUserIdAndStatus(uid,"active");
+    }
+
+    @Override
+    public List<TransactionTask> getAllTasks(String uid) {
+        return taskMapper.selectTaskListByUserId(uid);
+    }
+
+    @Override
+    public List<TransactionTask> getTasksByStatus(String uid, String status) {
+        return taskMapper.selectTaskListByUserIdAndStatus(uid, status);
     }
 }

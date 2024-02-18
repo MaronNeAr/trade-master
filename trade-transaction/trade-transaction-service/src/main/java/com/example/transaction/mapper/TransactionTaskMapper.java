@@ -8,6 +8,8 @@ import java.util.List;
 public interface TransactionTaskMapper {
     List<TransactionTask> selectTaskListByUserId(@Param("uid") String uid);
 
+    List<TransactionTask> selectTaskListByUserIdAndStatus(@Param("uid") String uid, @Param("status") String status);
+
     List<TransactionTask> selectTaskListByStatusAndType(@Param("status") String status, @Param("type") String type);
 
     TransactionTask selectTaskByTaskId(@Param("tid") Integer tid);

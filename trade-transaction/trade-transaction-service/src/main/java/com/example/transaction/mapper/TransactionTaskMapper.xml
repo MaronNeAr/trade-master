@@ -8,6 +8,12 @@
         where user_id = #{uid}
     </select>
 
+    <select id="selectTaskListByUserIdAndStatus" resultType="com.example.transaction.model.po.TransactionTask">
+        select * from transaction_task
+        where user_id = #{uid}
+        and transaction_status = #{status}
+    </select>
+
     <select id="selectTaskListByStatusAndType" resultType="com.example.transaction.model.po.TransactionTask">
         select * from transaction_task
         where transaction_status = #{status}

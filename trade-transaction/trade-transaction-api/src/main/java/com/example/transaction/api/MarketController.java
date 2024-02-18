@@ -7,10 +7,7 @@ import com.example.transaction.model.po.StockQuote;
 import com.example.transaction.model.po.TransactionSecurity;
 import com.example.transaction.service.MarketService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
@@ -53,13 +50,11 @@ public class MarketController {
     }
 
     @PostMapping("query/securities")
-    public Object querySecurityGroup(HttpServletRequest req) {
+    public Object querySecurityGroup(@RequestParam("type") String type,
+                                     @RequestParam("exchange") String exchange,
+                                     @RequestParam(value = "keyword", required = false) String keyword) {
         try {
-            String type = req.getParameter("type");
-            String exchange = req.getParameter("exchange");
-            String keyword = req.getParameter("keyword");
-            if (type == null || exchange == null) return new ErrorMessage("请至少键入type和exchange两个参数以查询行情列表").getMessage();
-            else if (typeSet.contains(type))
+            if (typeSet.contains(type))
                 return new SuccessMessage<List<TransactionSecurity>>(
                     "查询行情列表成功",
                     marketService.queryByType(type, exchange, keyword)
