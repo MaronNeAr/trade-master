@@ -17,6 +17,8 @@ public interface TransactionService {
 
     int sellCancel(Integer taskId);
 
+    String getTaskType(Integer tid);
+
     List<TransactionPosition> getActivePositions(String uid);
 
     List<TransactionTask> getAllTasks(String uid);

@@ -25,6 +25,11 @@
         where task_id = #{tid}
     </select>
 
+    <select id="selectTaskTypeByTaskId" resultType="String">
+        select transaction_type from transaction_task
+        where task_id = #{tid}
+    </select>
+
     <insert id="insertTask">
         insert into transaction_task (user_id, security_code, transaction_date, transaction_type, transaction_price, transaction_volume, transaction_status)
         values (#{userId}, #{securityCode}, #{transactionDate}, #{transactionType}, #{transactionPrice}, #{transactionVolume}, "active")

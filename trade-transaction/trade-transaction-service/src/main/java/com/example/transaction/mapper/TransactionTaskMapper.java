@@ -14,6 +14,8 @@ public interface TransactionTaskMapper {
 
     TransactionTask selectTaskByTaskId(@Param("tid") Integer tid);
 
+    String selectTaskTypeByTaskId(@Param("tid") Integer tid);
+
     int insertTask(TransactionTask task);
 
     int updateTaskStatusById(@Param("tid") Integer tid, @Param("status") String status);

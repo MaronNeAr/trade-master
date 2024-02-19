@@ -64,6 +64,29 @@ public class TransactionController {
         }
     }
 
+    @PostMapping("/r/cancel")
+    public Object cancelTransaction(@RequestParam("tid") Integer tid) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String uid = authService.getUidByPrincipal(principal);
+        if (uid == null) return new ErrorMessage("用户认证失败，请重新登录");
+        try {
+            String taskType = transactionService.getTaskType(tid);
+            if (taskType.equals("buy")) {
+                int state = transactionService.buyCancel(tid);
+                if (state == -1) return new ErrorMessage("只能撤单待交易的订单").getMessage();
+                else return new SuccessMessage("买入交易撤单成功", true).getMessage();
+            } else if (taskType.equals("sell")) {
+                int state = transactionService.sellCancel(tid);
+                if (state == -1) return new ErrorMessage("只能撤单待交易的订单").getMessage();
+                else return new SuccessMessage("卖出交易撤单成功", true).getMessage();
+            }
+            else return new ErrorMessage("交易撤单失败").getMessage();
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ErrorMessage("交易撤单失败").getMessage();
+        }
+    }
+
     @GetMapping("/r/position")
     public Object getPosition() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();

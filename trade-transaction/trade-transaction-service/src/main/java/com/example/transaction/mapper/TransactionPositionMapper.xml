@@ -13,7 +13,7 @@
         select *
         from transaction_position
         where user_id = #{uid}
-        and transaction_status = #{status}
+        and position_status = #{status}
     </select>
 
     <select id="selectPositionByUserIdAndCode" resultType="com.example.transaction.model.po.TransactionPosition">

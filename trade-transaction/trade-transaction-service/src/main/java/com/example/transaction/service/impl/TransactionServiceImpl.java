@@ -125,6 +125,11 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
+    public String getTaskType(Integer tid) {
+        return taskMapper.selectTaskTypeByTaskId(tid);
+    }
+
+    @Override
     public List<TransactionPosition> getActivePositions(String uid) {
         return positionMapper.selectPositionListByUserIdAndStatus(uid,"active");
     }
