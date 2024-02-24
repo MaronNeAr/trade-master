@@ -9,4 +9,6 @@ public interface TransactionSecurityMapper {
     List<TransactionSecurity> selectSecurityByTypeAndExchange(@Param("type") String type, @Param("exchange") String exchange, @Param("keyword") String keyword);
 
     List<TransactionSecurity> selectSecurityBySubtypeAndExchange(@Param("subtype")String subtype, @Param("exchange") String exchange, @Param("keyword") String keyword);
+
+    List<TransactionSecurity> selectSSE50Security();
 }

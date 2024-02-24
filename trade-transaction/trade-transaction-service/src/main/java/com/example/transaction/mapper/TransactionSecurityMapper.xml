@@ -18,4 +18,9 @@
         and (security_code like '%${keyword}%' or security_name like '%${keyword}%')
         limit 100
     </select>
+
+    <select id="selectSSE50Security" resultType="com.example.transaction.model.po.TransactionSecurity">
+        select * from transaction_security
+        where sse50 = 1
+    </select>
 </mapper>

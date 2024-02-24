@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.transaction.mapper.TransactionMarketMapper">
+    <select id="selectMarketByCode" resultType="com.example.transaction.model.po.TransactionMarket">
+        select *
+        from transaction_market
+        where code = #{code}
+    </select>
+
+    <insert id="insertMarket">
+        insert into transaction_market (market_id, name, code, last_price, previous_close, open, volume_hands, outside_disc, inside_disc, buy1, buy2, buy3, buy4, buy5, buy1_volume, buy2_volume, buy3_volume, buy4_volume, buy5_volume, sell1, sell2, sell3, sell4, sell5, sell1_volume, sell2_volume, sell3_volume, sell4_volume, sell5_volume, recent_transaction, time, `change`, change_percent, high, low, price_volume_turnover, volume_hands2, turnover_ten_thousand, turnover_rate, pe_ratio, `empty`, high2, low2, amplitude, circulation_market_value, pb_ratio, limit_up_price, limitDownPrice, timestamp)
+        values (#{marketId}, #{name}, #{code}, #{lastPrice}, #{previousClose}, #{open}, #{volumeHands}, #{outsideDisc}, #{insideDisc}, #{buy1}, #{buy2}, #{buy3}, #{buy4}, #{buy5}, #{buy1Volume}, #{buy2Volume}, #{buy3Volume}, #{buy4Volume}, #{buy5Volume}, #{sell1}, #{sell2}, #{sell3}, #{sell4}, #{sell5}, #{sell1Volume}, #{sell2Volume}, #{sell3Volume}, #{sell4Volume}, #{sell5Volume}, #{recentTransaction}, #{time}, #{change}, #{changePercent}, #{high}, #{low}, #{priceVolumeTurnover}, #{volumeHands2}, #{turnoverTenThousand}, #{turnoverRate}, #{peRatio}, #{empty}, #{high2}, #{low2}, #{amplitude}, #{circulationMarketValue}, #{pbRatio}, #{limitUpPrice}, #{limitDownPrice}, #{timestamp} )
+    </insert>
+</mapper>
