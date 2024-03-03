@@ -5,6 +5,7 @@ import com.example.messagesdk.service.MqMessageService;
 import com.example.transaction.TransactionApiApplication;
 import com.example.transaction.model.po.StockPriceSeries;
 import com.example.transaction.model.po.TransactionAccount;
+import com.example.transaction.model.po.TransactionMarket;
 import com.example.transaction.model.po.TransactionSecurity;
 import com.example.transaction.service.MarketService;
 import com.example.transaction.service.RedisService;
@@ -84,7 +85,8 @@ public class TransactionApiApplicationTests {
     }
 
     @Test
-    public void test05() {
-
+    public void test05() throws UnsupportedEncodingException {
+        List<TransactionMarket> res = marketService.getQuantMarketByCode("601800");
+        System.out.println(res);
     }
 }

@@ -40,61 +40,9 @@ public class TransactionMarket {
     private BigDecimal pbRatio;  // 市净率
     private BigDecimal limitUpPrice;  // 涨停价
     private BigDecimal limitDownPrice;  // 跌停价
-    private Timestamp timestamp;
+    private Timestamp createTime;
 
-    public TransactionMarket(StockQuote stock, Timestamp timestamp) {
-        this.name = stock.getName();
-        this.code = stock.getCode();
-        this.lastPrice = stock.getLastPrice();
-        this.previousClose = stock.getPreviousClose();
-        this.open = stock.getOpen();
-        this.volumeHands = stock.getVolumeHands();
-        this.outsideDisc = stock.getOutsideDisc();
-        this.insideDisc = stock.getInsideDisc();
-        this.buy1 = stock.getBuy1();
-        this.buy2 = stock.getBuy2();
-        this.buy3 = stock.getBuy3();
-        this.buy4 = stock.getBuy4();
-        this.buy5 = stock.getBuy5();
-        this.buy1Volume = stock.getBuy1Volume();
-        this.buy2Volume = stock.getBuy2Volume();
-        this.buy3Volume = stock.getBuy3Volume();
-        this.buy4Volume = stock.getBuy4Volume();
-        this.buy5Volume = stock.getBuy5Volume();
-        this.sell1 = stock.getSell1();
-        this.sell2 = stock.getSell2();
-        this.sell3 = stock.getSell3();
-        this.sell4 = stock.getSell4();
-        this.sell5 = stock.getSell5();
-        this.sell1Volume = stock.getSell1Volume();
-        this.sell2Volume = stock.getSell2Volume();
-        this.sell3Volume = stock.getSell3Volume();
-        this.sell4Volume = stock.getSell4Volume();
-        this.sell5Volume = stock.getSell5Volume();
-        this.recentTransaction = stock.getRecentTransaction();
-        this.time = stock.getTime();
-        this.change = stock.getChange();
-        this.changePercent = stock.getChangePercent();
-        this.high = stock.getHigh();
-        this.low = stock.getLow();
-        this.priceVolumeTurnover = stock.getPriceVolumeTurnover();
-        this.volumeHands2 = stock.getVolumeHands2();
-        this.turnoverTenThousand = stock.getTurnoverTenThousand();
-        this.turnoverRate = stock.getTurnoverRate();
-        this.peRatio = stock.getPeRatio();
-        this.empty = stock.getEmpty();
-        this.high2 = stock.getHigh2();
-        this.low2 = stock.getLow2();
-        this.amplitude = stock.getAmplitude();
-        this.circulationMarketValue = stock.getCirculationMarketValue();
-        this.totalMarketValue = stock.getTotalMarketValue();
-        this.pbRatio = stock.getPbRatio();
-        this.limitUpPrice = stock.getLimitUpPrice();
-        this.limitDownPrice = stock.getLimitDownPrice();
-        this.timestamp = timestamp;
-    }
-
-    public TransactionMarket(Integer marketId, String name, String code, BigDecimal lastPrice, BigDecimal previousClose, BigDecimal open, BigDecimal volumeHands, BigDecimal outsideDisc, BigDecimal insideDisc, BigDecimal buy1, BigDecimal buy2, BigDecimal buy3, BigDecimal buy4, BigDecimal buy5, BigDecimal buy1Volume, BigDecimal buy2Volume, BigDecimal buy3Volume, BigDecimal buy4Volume, BigDecimal buy5Volume, BigDecimal sell1, BigDecimal sell2, BigDecimal sell3, BigDecimal sell4, BigDecimal sell5, BigDecimal sell1Volume, BigDecimal sell2Volume, BigDecimal sell3Volume, BigDecimal sell4Volume, BigDecimal sell5Volume, String recentTransaction, String time, BigDecimal change, BigDecimal changePercent, BigDecimal high, BigDecimal low, String priceVolumeTurnover, BigDecimal volumeHands2, BigDecimal turnoverTenThousand, BigDecimal turnoverRate, BigDecimal peRatio, String empty, BigDecimal high2, BigDecimal low2, BigDecimal amplitude, BigDecimal circulationMarketValue, BigDecimal totalMarketValue, BigDecimal pbRatio, BigDecimal limitUpPrice, BigDecimal limitDownPrice, Timestamp timestamp) {
+    public TransactionMarket(Integer marketId, String name, String code, BigDecimal lastPrice, BigDecimal previousClose, BigDecimal open, BigDecimal volumeHands, BigDecimal outsideDisc, BigDecimal insideDisc, BigDecimal buy1, BigDecimal buy2, BigDecimal buy3, BigDecimal buy4, BigDecimal buy5, BigDecimal buy1Volume, BigDecimal buy2Volume, BigDecimal buy3Volume, BigDecimal buy4Volume, BigDecimal buy5Volume, BigDecimal sell1, BigDecimal sell2, BigDecimal sell3, BigDecimal sell4, BigDecimal sell5, BigDecimal sell1Volume, BigDecimal sell2Volume, BigDecimal sell3Volume, BigDecimal sell4Volume, BigDecimal sell5Volume, String recentTransaction, String time, BigDecimal change, BigDecimal changePercent, BigDecimal high, BigDecimal low, String priceVolumeTurnover, BigDecimal volumeHands2, BigDecimal turnoverTenThousand, BigDecimal turnoverRate, BigDecimal peRatio, String empty, BigDecimal high2, BigDecimal low2, BigDecimal amplitude, BigDecimal circulationMarketValue, BigDecimal totalMarketValue, BigDecimal pbRatio, BigDecimal limitUpPrice, BigDecimal limitDownPrice, Timestamp createTime) {
         this.marketId = marketId;
         this.name = name;
         this.code = code;
@@ -144,7 +92,62 @@ public class TransactionMarket {
         this.pbRatio = pbRatio;
         this.limitUpPrice = limitUpPrice;
         this.limitDownPrice = limitDownPrice;
-        this.timestamp = timestamp;
+        this.createTime = createTime;
+    }
+
+    public TransactionMarket() {
+    }
+
+    public TransactionMarket(StockQuote stock, Timestamp createTime) {
+        this.name = stock.getName();
+        this.code = stock.getCode();
+        this.lastPrice = stock.getLastPrice();
+        this.previousClose = stock.getPreviousClose();
+        this.open = stock.getOpen();
+        this.volumeHands = stock.getVolumeHands();
+        this.outsideDisc = stock.getOutsideDisc();
+        this.insideDisc = stock.getInsideDisc();
+        this.buy1 = stock.getBuy1();
+        this.buy2 = stock.getBuy2();
+        this.buy3 = stock.getBuy3();
+        this.buy4 = stock.getBuy4();
+        this.buy5 = stock.getBuy5();
+        this.buy1Volume = stock.getBuy1Volume();
+        this.buy2Volume = stock.getBuy2Volume();
+        this.buy3Volume = stock.getBuy3Volume();
+        this.buy4Volume = stock.getBuy4Volume();
+        this.buy5Volume = stock.getBuy5Volume();
+        this.sell1 = stock.getSell1();
+        this.sell2 = stock.getSell2();
+        this.sell3 = stock.getSell3();
+        this.sell4 = stock.getSell4();
+        this.sell5 = stock.getSell5();
+        this.sell1Volume = stock.getSell1Volume();
+        this.sell2Volume = stock.getSell2Volume();
+        this.sell3Volume = stock.getSell3Volume();
+        this.sell4Volume = stock.getSell4Volume();
+        this.sell5Volume = stock.getSell5Volume();
+        this.recentTransaction = stock.getRecentTransaction();
+        this.time = stock.getTime();
+        this.change = stock.getChange();
+        this.changePercent = stock.getChangePercent();
+        this.high = stock.getHigh();
+        this.low = stock.getLow();
+        this.priceVolumeTurnover = stock.getPriceVolumeTurnover();
+        this.volumeHands2 = stock.getVolumeHands2();
+        this.turnoverTenThousand = stock.getTurnoverTenThousand();
+        this.turnoverRate = stock.getTurnoverRate();
+        this.peRatio = stock.getPeRatio();
+        this.empty = stock.getEmpty();
+        this.high2 = stock.getHigh2();
+        this.low2 = stock.getLow2();
+        this.amplitude = stock.getAmplitude();
+        this.circulationMarketValue = stock.getCirculationMarketValue();
+        this.totalMarketValue = stock.getTotalMarketValue();
+        this.pbRatio = stock.getPbRatio();
+        this.limitUpPrice = stock.getLimitUpPrice();
+        this.limitDownPrice = stock.getLimitDownPrice();
+        this.createTime = createTime;
     }
 }
 

@@ -31,8 +31,8 @@
     </select>
 
     <insert id="insertTask">
-        insert into transaction_task (user_id, security_code, transaction_date, transaction_type, transaction_price, transaction_volume, transaction_status)
-        values (#{userId}, #{securityCode}, #{transactionDate}, #{transactionType}, #{transactionPrice}, #{transactionVolume}, "active")
+        insert into transaction_task (user_id, security_code, transaction_time, transaction_type, transaction_price, transaction_volume, transaction_status)
+        values (#{userId}, #{securityCode}, #{transactionTime}, #{transactionType}, #{transactionPrice}, #{transactionVolume}, "active")
     </insert>
 
     <update id="updateTaskStatusById">

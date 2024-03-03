@@ -10,7 +10,7 @@ public class TransactionTask {
     private Integer taskId;
     private String userId;
     private String securityCode;
-    private Timestamp transactionDate;
+    private Timestamp transactionTime;
     private String transactionType;
     private BigDecimal transactionPrice;
     private Integer transactionVolume;
@@ -19,11 +19,11 @@ public class TransactionTask {
     public TransactionTask() {
     }
 
-    public TransactionTask(Integer taskId, String userId, String securityCode, Timestamp transactionDate, String transactionType, BigDecimal transactionPrice, Integer transactionVolume, String transactionStatus) {
+    public TransactionTask(Integer taskId, String userId, String securityCode, Timestamp transactionTime, String transactionType, BigDecimal transactionPrice, Integer transactionVolume, String transactionStatus) {
         this.taskId = taskId;
         this.userId = userId;
         this.securityCode = securityCode;
-        this.transactionDate = transactionDate;
+        this.transactionTime = transactionTime;
         this.transactionType = transactionType;
         this.transactionPrice = transactionPrice;
         this.transactionVolume = transactionVolume;

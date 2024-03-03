@@ -34,7 +34,10 @@ public class DataCrawlerServiceImpl implements DataCrawlerService {
     @Override
     @Scheduled(fixedRate = 60000)
     public int genSecurityData() {
-        if (!isAStockTradingTime()) return -1;
+        if (!isAStockTradingTime()) {
+            System.out.println(new Timestamp(System.currentTimeMillis()) + ": 目前不在交易时间段");
+            return -1;
+        }
         List<TransactionSecurity> securityList = securityMapper.selectSSE50Security();
         securityList.forEach((item) -> {
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());

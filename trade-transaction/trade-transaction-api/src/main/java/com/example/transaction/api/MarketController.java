@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -70,4 +71,18 @@ public class MarketController {
             return new ErrorMessage("查询行情列表成失败").getMessage();
         }
     }
+
+    @PostMapping("market")
+    public Object getQuantMarketByCode(@RequestParam("code") String code,
+                                  @RequestParam(value = "startDate", required = false) String startDate,
+                                  @RequestParam(value = "endDate", required = false) String endDate) {
+        try {
+            if (startDate == null || endDate == null) return new SuccessMessage<>("查询量化行情成功", marketService.getQuantMarketByCode(code)).getMessage();
+            else return new SuccessMessage<>("查询量化行情成功", marketService.getQuantMarketByCodeAndDate(code, startDate, endDate)).getMessage();
+        } catch (ParseException e) {
+            System.out.println(e);
+            return new ErrorMessage("查询量化行情失败").getMessage();
+        }
+    }
+
 }
