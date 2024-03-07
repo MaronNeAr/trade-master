@@ -3,7 +3,7 @@
 
 #### 采用技术
 
-Nacos、SpringCloud、Mybatis、MySQL、Redis、RabbitMQ、SpringSecurity、TypeScript、Git、Vue
+SpringCloudAlibaba、SpringBoot、Mybatis、MySQL、Redis、RabbitMQ、SpringSecurity、TypeScript、Git、Vue
 
 #### 项目概述
 
