@@ -1,27 +1,18 @@
 package com.example.transaction.service.impl;
 
 import com.example.transaction.mapper.*;
-import com.example.transaction.model.po.StockQuote;
-import com.example.transaction.model.po.TransactionMarket;
 import com.example.transaction.model.po.TransactionPosition;
 import com.example.transaction.model.po.TransactionTask;
-import com.example.transaction.model.vo.TransactionDetailsVo;
-import com.example.transaction.model.vo.TransactionPositionVo;
 import com.example.transaction.service.MarketService;
 import com.example.transaction.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.stream.Collectors;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
