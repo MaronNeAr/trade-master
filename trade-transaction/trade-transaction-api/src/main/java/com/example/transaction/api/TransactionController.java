@@ -102,7 +102,7 @@ public class TransactionController {
     }
 
     @PostMapping("/r/details")
-    public Object getAllTradeDetails(@RequestParam(value = "status", required = false) String status) {
+    public Object getAllTradeDetails(@RequestParam(value = "status", required = false) String status) throws InterruptedException {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String uid = authService.getUidByPrincipal(principal);
         if (uid == null) return new ErrorMessage("用户认证失败，请重新登录");
@@ -112,7 +112,7 @@ public class TransactionController {
             return new ErrorMessage("交易明细状态只能为active、filled或cancelled").getMessage();
         try {
             return new SuccessMessage<>("获取" + status + "交易明细成功",
-                    transactionService.getTasksByStatus(uid,status)).getMessage();
+                    transactionService.getTasksByStatus(uid, status)).getMessage();
         } catch (Exception e) {
             System.out.println(e);
             return new ErrorMessage("获取交易明细失败").getMessage();

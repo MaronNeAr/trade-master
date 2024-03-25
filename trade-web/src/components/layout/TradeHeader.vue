@@ -1,5 +1,5 @@
 <template>
-<v-app-bar :elevation="2" active title="Trader" rounded>
+<v-app-bar :elevation="2" active title="基于分布式架构的T + 0量化交易平台" rounded>
     <template v-slot:prepend>
         <v-app-bar-nav-icon></v-app-bar-nav-icon>
       </template>

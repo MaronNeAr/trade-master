@@ -1,20 +1,27 @@
 package com.example.transaction.service.impl;
 
-import com.example.transaction.mapper.TransactionAccountMapper;
-import com.example.transaction.mapper.TransactionBrokerageAccountMapper;
-import com.example.transaction.mapper.TransactionPositionMapper;
-import com.example.transaction.mapper.TransactionTaskMapper;
+import com.example.transaction.mapper.*;
+import com.example.transaction.model.po.StockQuote;
+import com.example.transaction.model.po.TransactionMarket;
 import com.example.transaction.model.po.TransactionPosition;
 import com.example.transaction.model.po.TransactionTask;
+import com.example.transaction.model.vo.TransactionDetailsVo;
+import com.example.transaction.model.vo.TransactionPositionVo;
+import com.example.transaction.service.MarketService;
 import com.example.transaction.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Collectors;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
@@ -30,6 +37,9 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Autowired
     TransactionPositionMapper positionMapper;
+
+    @Autowired
+    MarketService marketService;
 
     private ReentrantLock balanceLock = new ReentrantLock();
 
@@ -130,17 +140,74 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<TransactionPosition> getActivePositions(String uid) {
+    public List<TransactionPosition> getActivePositions(String uid) throws InterruptedException {
         return positionMapper.selectPositionListByUserIdAndStatus(uid,"active");
+//        List<TransactionPosition> positionList = positionMapper.selectPositionListByUserIdAndStatus(uid,"active");
+//        List<TransactionPositionVo> resList = new ArrayList<>();
+//        CountDownLatch latch = new CountDownLatch(positionList.size());
+//
+//        positionList.forEach((position) -> {
+//            new Thread(() -> {
+//                StockQuote stock = new StockQuote();
+//                try {
+//                    stock = marketService.getMarketData(position.getSecurityCode());
+//                } catch (UnsupportedEncodingException e) {
+//                    System.out.println(e);
+//                }
+//                resList.add(new TransactionPositionVo(position, stock.getName(), stock.getLastPrice()));
+//                latch.countDown();
+//            }).start();
+//        });
+//
+//        latch.await(5, TimeUnit.SECONDS);
+//        return resList.stream().sorted((o1, o2) -> o2.getPositionCost().compareTo(o1.getPositionCost())).collect(Collectors.toList());
     }
 
     @Override
-    public List<TransactionTask> getAllTasks(String uid) {
+    public List<TransactionTask> getAllTasks(String uid) throws InterruptedException {
         return taskMapper.selectTaskListByUserId(uid);
+//        List<TransactionTask> taskList = taskMapper.selectTaskListByUserId(uid);
+//        List<TransactionDetailsVo> resList = new ArrayList<>();
+//        CountDownLatch latch = new CountDownLatch(taskList.size());
+//
+//        taskList.forEach((task) -> {
+//            new Thread(() -> {
+//                StockQuote stock = new StockQuote();
+//                try {
+//                    stock = marketService.getMarketData(task.getSecurityCode());
+//                } catch (UnsupportedEncodingException e) {
+//                    System.out.println(e);
+//                }
+//                resList.add(new TransactionDetailsVo(task, stock.getName(), stock.getLastPrice()));
+//                latch.countDown();
+//            }).start();
+//        });
+//
+//        latch.await(5, TimeUnit.SECONDS);
+//        return resList.stream().sorted((o1, o2) -> o2.getTransactionTime().compareTo(o1.getTransactionTime())).collect(Collectors.toList());
     }
 
     @Override
-    public List<TransactionTask> getTasksByStatus(String uid, String status) {
+    public List<TransactionTask> getTasksByStatus(String uid, String status) throws InterruptedException {
         return taskMapper.selectTaskListByUserIdAndStatus(uid, status);
+//        List<TransactionTask> taskList = taskMapper.selectTaskListByUserIdAndStatus(uid, status);
+//        List<TransactionDetailsVo> resList = new ArrayList<>();
+//        CountDownLatch latch = new CountDownLatch(taskList.size());
+//
+//        taskList.forEach((task) -> {
+//            new Thread(() -> {
+//                StockQuote stock = new StockQuote();
+//                try {
+//                    stock = marketService.getMarketData(task.getSecurityCode());
+//                } catch (UnsupportedEncodingException e) {
+//                    System.out.println(e);
+//                }
+//                resList.add(new TransactionDetailsVo(task, stock.getName(), stock.getLastPrice()));
+//                latch.countDown();
+//            }).start();
+//        });
+//
+//        latch.await(5, TimeUnit.SECONDS);
+//        return resList.stream().sorted((o1, o2) -> o2.getTransactionTime().compareTo(o1.getTransactionTime())).collect(Collectors.toList());
     }
 }

@@ -32,7 +32,7 @@
                 <td class="text-center">{{ record.securityName }}</td>
                 <td :class="record.transactionType" class="text-center">{{ record.transactionType == 'buy' ? '买入':'卖出' }}</td>
                 <td class="text-right">{{ record.transactionPrice.toFixed(2) }}</td>
-                <td class="text-right">{{ record.currentPrice.toFixed(2) }}</td>
+                <td class="text-right">{{ record.currentPrice }}</td>
                 <td class="text-right">{{ record.transactionVolume }}</td>
                 <td class="text-center">
                     <v-btn size="small" color="red" @click="confirm(record.taskId)"> 撤单</v-btn>
@@ -99,8 +99,10 @@ const getRecordList = async () => {
         console.log(result ?.message)
         return
     }
-    recordList.value = []
-    result.data.forEach(async (item) => {
+
+    recordList.value = result.data
+
+    recordList.value.forEach(async (item) => {
         const ret = await HttpManager.getMarketData(item.securityCode).catch(error => {
             console.log(error)
             return
@@ -111,9 +113,7 @@ const getRecordList = async () => {
         }
         item.securityName = ret.data.name
         item.currentPrice = ret.data.lastPrice
-        recordList.value.push(item)
     });
-    recordList.value.sort((o1, o2) => o2.transactionDate - o1.transactionDate)
 }
 
 const showMessage = (message) => {

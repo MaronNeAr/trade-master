@@ -7,6 +7,7 @@
         select *
         from transaction_position
         where user_id = #{uid}
+        order by position_cost desc
     </select>
 
     <select id="selectPositionListByUserIdAndStatus" resultType="com.example.transaction.model.po.TransactionPosition">
@@ -14,6 +15,7 @@
         from transaction_position
         where user_id = #{uid}
         and position_status = #{status}
+        order by position_cost desc
     </select>
 
     <select id="selectPositionByUserIdAndCode" resultType="com.example.transaction.model.po.TransactionPosition">

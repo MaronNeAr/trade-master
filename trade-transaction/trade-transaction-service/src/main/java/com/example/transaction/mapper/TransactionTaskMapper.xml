@@ -6,18 +6,21 @@
     <select id="selectTaskListByUserId" resultType="com.example.transaction.model.po.TransactionTask">
         select * from transaction_task
         where user_id = #{uid}
+        order by transaction_time desc
     </select>
 
     <select id="selectTaskListByUserIdAndStatus" resultType="com.example.transaction.model.po.TransactionTask">
         select * from transaction_task
         where user_id = #{uid}
         and transaction_status = #{status}
+        order by transaction_time desc
     </select>
 
     <select id="selectTaskListByStatusAndType" resultType="com.example.transaction.model.po.TransactionTask">
         select * from transaction_task
         where transaction_status = #{status}
         and transaction_type = #{type}
+        order by transaction_time desc
     </select>
 
     <select id="selectTaskByTaskId" resultType="com.example.transaction.model.po.TransactionTask">

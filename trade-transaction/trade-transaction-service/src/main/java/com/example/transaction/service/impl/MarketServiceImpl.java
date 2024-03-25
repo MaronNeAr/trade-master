@@ -32,7 +32,7 @@ public class MarketServiceImpl implements MarketService {
 
     @Override
     public StockQuote getMarketData(String code) throws UnsupportedEncodingException {
-        if (redisService.hasKey("security/" + code)) return (StockQuote) redisService.get("security" + code);
+        if (redisService.hasKey("security/" + code)) return (StockQuote) redisService.get("security/" + code);
 
         String response = HttpClient.sendGetRequest( "https://qt.gtimg.cn/q=" + code, "GBK");
         if (response.length() < 100) return null;
@@ -54,7 +54,7 @@ public class MarketServiceImpl implements MarketService {
 
     @Override
     public List<StockPriceSeries> getHistoryData(String code) {
-        if (redisService.hasKey("series/week/" + code)) return (List<StockPriceSeries>) redisService.get("series/week" + code);
+        if (redisService.hasKey("series/week/" + code)) return (List<StockPriceSeries>) redisService.get("series/week/" + code);
 
         String response = HttpClient.sendGetRequest("https://data.gtimg.cn/flashdata/hushen/weekly/" + code + ".js");
         if (response.length() < 100) return null;

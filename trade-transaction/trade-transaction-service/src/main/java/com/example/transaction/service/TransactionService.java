@@ -2,6 +2,8 @@ package com.example.transaction.service;
 
 import com.example.transaction.model.po.TransactionPosition;
 import com.example.transaction.model.po.TransactionTask;
+import com.example.transaction.model.vo.TransactionDetailsVo;
+import com.example.transaction.model.vo.TransactionPositionVo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.math.BigDecimal;
@@ -19,9 +21,9 @@ public interface TransactionService {
 
     String getTaskType(Integer tid);
 
-    List<TransactionPosition> getActivePositions(String uid);
+    List<TransactionPosition> getActivePositions(String uid) throws InterruptedException;
 
-    List<TransactionTask> getAllTasks(String uid);
+    List<TransactionTask> getAllTasks(String uid) throws InterruptedException;
 
-    List<TransactionTask> getTasksByStatus(String uid, String status);
+    List<TransactionTask> getTasksByStatus(String uid, String status) throws InterruptedException;
 }
