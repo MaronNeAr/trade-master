@@ -7,6 +7,7 @@ import com.example.transaction.model.po.StockPriceSeries;
 import com.example.transaction.model.po.StockQuote;
 import com.example.transaction.model.po.TransactionMarket;
 import com.example.transaction.model.po.TransactionSecurity;
+import com.example.transaction.model.vo.QuantMarketVo;
 import com.example.transaction.service.MarketService;
 import com.example.transaction.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +72,11 @@ public class MarketServiceImpl implements MarketService {
     }
 
     @Override
+    public List<TransactionSecurity> getSSE50Security() {
+        return securityMapper.selectSSE50Security();
+    }
+
+    @Override
     public List<TransactionSecurity> queryByType(String type, String exchange, String keyword) {
         return securityMapper.selectSecurityByTypeAndExchange(type, exchange, keyword);
     }
@@ -81,20 +87,20 @@ public class MarketServiceImpl implements MarketService {
     }
 
     @Override
-    public List<TransactionMarket> getQuantMarketByCode(String code) {
-        if (redisService.hasKey("series/quant/" + code)) return (List<TransactionMarket>) redisService.get("series/quant/" + code);
+    public List<QuantMarketVo> getQuantMarketByCode(String code) {
+        if (redisService.hasKey("series/quant/" + code)) return (List<QuantMarketVo>) redisService.get("series/quant/" + code);
 
-        List<TransactionMarket> series = marketMapper.selectMarketByCode(code);
+        List<QuantMarketVo> series = marketMapper.selectQuantMarketByCode(code);
         redisService.set("series/quant/" + code, series, 24 * 3600);
 
         return series;
     }
 
     @Override
-    public List<TransactionMarket> getQuantMarketByCodeAndDate(String code, String startDate, String endDate) throws ParseException {
-        if (redisService.hasKey("series/quant/" + code + "/" + startDate + "-" + endDate)) return (List<TransactionMarket>) redisService.get("series/quant/" + code + "/" + startDate + "-" + endDate);
+    public List<QuantMarketVo> getQuantMarketByCodeAndDate(String code, String startDate, String endDate) throws ParseException {
+        if (redisService.hasKey("series/quant/" + code + "/" + startDate + "-" + endDate)) return (List<QuantMarketVo>) redisService.get("series/quant/" + code + "/" + startDate + "-" + endDate);
 
-        List<TransactionMarket> series = marketMapper.selectMarketByCodeAndDate(code, startDate, endDate);
+        List<QuantMarketVo> series = marketMapper.selectQuantMarketByCodeAndDate(code, startDate, endDate);
         redisService.set("series/quant/" + code + "/" + startDate + "-" + endDate, series, 24 * 3600);
 
         return series;

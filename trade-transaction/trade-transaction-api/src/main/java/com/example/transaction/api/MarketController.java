@@ -72,13 +72,18 @@ public class MarketController {
         }
     }
 
+    @GetMapping("query/securities/sse50")
+    public Object getSSE50Security() {
+        return new SuccessMessage<>("查询SSE50列表成功", marketService.getSSE50Security()).getMessage();
+    }
+
     @PostMapping("market")
     public Object getQuantMarketByCode(@RequestParam("code") String code,
-                                  @RequestParam(value = "startDate", required = false) String startDate,
-                                  @RequestParam(value = "endDate", required = false) String endDate) {
+                                  @RequestParam(value = "start", required = false) String start,
+                                  @RequestParam(value = "end", required = false) String end) {
         try {
-            if (startDate == null || endDate == null) return new SuccessMessage<>("查询量化行情成功", marketService.getQuantMarketByCode(code)).getMessage();
-            else return new SuccessMessage<>("查询量化行情成功", marketService.getQuantMarketByCodeAndDate(code, startDate, endDate)).getMessage();
+            if (start == null || end == null) return new SuccessMessage<>("查询量化行情成功", marketService.getQuantMarketByCode(code)).getMessage();
+            else return new SuccessMessage<>("查询量化行情成功", marketService.getQuantMarketByCodeAndDate(code, start, end)).getMessage();
         } catch (ParseException e) {
             System.out.println(e);
             return new ErrorMessage("查询量化行情失败").getMessage();

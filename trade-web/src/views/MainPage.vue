@@ -95,4 +95,8 @@ onMounted(() => {
 .test {
     border: 1px solid black;
 }
+
+div {
+    animation: fadeInAnimation ease 0.5s;
+}
 </style>
