@@ -52,7 +52,7 @@
             </v-slider>
         </v-col>
         <v-col cols="8">
-            <quant-chart class="quant-chart" :marketData="marketDataMap"></quant-chart>
+            <quant-chart class="quant-chart" :marketData="marketDataMap" :chartConfig="chartConfig"></quant-chart>
         </v-col>
     </v-row>
     <v-snackbar :timeout="2000" v-model="snackbar">
@@ -88,7 +88,15 @@ const offset = ref(50)
 const volume = ref(1000)
 const lowRatio = ref(0.1)
 const highRatio = ref(0.1)
- 
+const chartConfig = computed(() => {
+    return {
+        window: window.value,
+        offset: offset.value,
+        lowRatio: lowRatio.value,
+        highRatio: highRatio.value
+    }
+})
+
 const snackbar = ref(false)
 const snackbarText = ref("")
 
