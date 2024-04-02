@@ -83,10 +83,4 @@ public class TransactionApiApplicationTests {
         mqMessageService.addMessage("buy", "marlon1475", "sh600001/6.53/100", String.valueOf(LocalDateTime.now()));
         System.out.println("添加成功" + LocalDateTime.now());
     }
-
-    @Test
-    public void test05() throws UnsupportedEncodingException {
-        List<TransactionMarket> res = marketService.getQuantMarketByCode("601800");
-        System.out.println(res);
-    }
 }

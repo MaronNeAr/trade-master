@@ -4,8 +4,6 @@
         <v-tab value="stock">股票</v-tab>
         <v-tab value="fund">基金</v-tab>
         <v-tab value="bond">债券</v-tab>
-        <v-tab value="index">指数</v-tab>
-        <v-tab value="futures">期货</v-tab>
     </v-tabs>
 
     <v-card-text>

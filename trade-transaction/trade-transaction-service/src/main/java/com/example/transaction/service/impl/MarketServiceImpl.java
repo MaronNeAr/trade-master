@@ -5,8 +5,8 @@ import com.example.transaction.mapper.TransactionMarketMapper;
 import com.example.transaction.mapper.TransactionSecurityMapper;
 import com.example.transaction.model.po.StockPriceSeries;
 import com.example.transaction.model.po.StockQuote;
-import com.example.transaction.model.po.TransactionMarket;
 import com.example.transaction.model.po.TransactionSecurity;
+import com.example.transaction.model.vo.QuantMarketVo;
 import com.example.transaction.service.MarketService;
 import com.example.transaction.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -32,7 +30,7 @@ public class MarketServiceImpl implements MarketService {
 
     @Override
     public StockQuote getMarketData(String code) throws UnsupportedEncodingException {
-        if (redisService.hasKey("security/" + code)) return (StockQuote) redisService.get("security" + code);
+        if (redisService.hasKey("security/" + code)) return (StockQuote) redisService.get("security/" + code);
 
         String response = HttpClient.sendGetRequest( "https://qt.gtimg.cn/q=" + code, "GBK");
         if (response.length() < 100) return null;
@@ -54,7 +52,7 @@ public class MarketServiceImpl implements MarketService {
 
     @Override
     public List<StockPriceSeries> getHistoryData(String code) {
-        if (redisService.hasKey("series/week/" + code)) return (List<StockPriceSeries>) redisService.get("series/week" + code);
+        if (redisService.hasKey("series/week/" + code)) return (List<StockPriceSeries>) redisService.get("series/week/" + code);
 
         String response = HttpClient.sendGetRequest("https://data.gtimg.cn/flashdata/hushen/weekly/" + code + ".js");
         if (response.length() < 100) return null;
@@ -73,6 +71,11 @@ public class MarketServiceImpl implements MarketService {
     }
 
     @Override
+    public List<TransactionSecurity> getSSE50Security() {
+        return securityMapper.selectSSE50Security();
+    }
+
+    @Override
     public List<TransactionSecurity> queryByType(String type, String exchange, String keyword) {
         return securityMapper.selectSecurityByTypeAndExchange(type, exchange, keyword);
     }
@@ -83,20 +86,20 @@ public class MarketServiceImpl implements MarketService {
     }
 
     @Override
-    public List<TransactionMarket> getQuantMarketByCode(String code) {
-        if (redisService.hasKey("series/quant/" + code)) return (List<TransactionMarket>) redisService.get("series/quant/" + code);
+    public List<QuantMarketVo> getQuantMarketByCode(String code) {
+        if (redisService.hasKey("series/quant/" + code)) return (List<QuantMarketVo>) redisService.get("series/quant/" + code);
 
-        List<TransactionMarket> series = marketMapper.selectMarketByCode(code);
+        List<QuantMarketVo> series = marketMapper.selectQuantMarketByCode(code);
         redisService.set("series/quant/" + code, series, 24 * 3600);
 
         return series;
     }
 
     @Override
-    public List<TransactionMarket> getQuantMarketByCodeAndDate(String code, String startDate, String endDate) throws ParseException {
-        if (redisService.hasKey("series/quant/" + code + "/" + startDate + "-" + endDate)) return (List<TransactionMarket>) redisService.get("series/quant/" + code + "/" + startDate + "-" + endDate);
+    public List<QuantMarketVo> getQuantMarketByCodeAndDate(String code, String startDate, String endDate) throws ParseException {
+        if (redisService.hasKey("series/quant/" + code + "/" + startDate + "-" + endDate)) return (List<QuantMarketVo>) redisService.get("series/quant/" + code + "/" + startDate + "-" + endDate);
 
-        List<TransactionMarket> series = marketMapper.selectMarketByCodeAndDate(code, startDate, endDate);
+        List<QuantMarketVo> series = marketMapper.selectQuantMarketByCodeAndDate(code, startDate, endDate);
         redisService.set("series/quant/" + code + "/" + startDate + "-" + endDate, series, 24 * 3600);
 
         return series;

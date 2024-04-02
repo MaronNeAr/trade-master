@@ -22,7 +22,12 @@ const HttpManager = {
 
   getMarketData: (code) => get(`transaction/query/${code}`),
   getHistoryData: (code) => get(`transaction/history/${code}`),
-  getMarketList: (params) => post(`transaction/query/securities`, params) 
+  getMarketList: (params) => post(`transaction/query/securities`, params),
+  getSSE50List: () => get(`transaction/query/securities/sse50`),
+
+  getQuantMarketData: (params) => post(`transaction/market`, params),
+  rollingWindowQuant: (params) => post(`transaction/quant/rolling-window`, params),
+  inOutsideDiscQuant: (params) => post(`transaction/quant/in-outside-disc`, params)
 }
 
 export { HttpManager }

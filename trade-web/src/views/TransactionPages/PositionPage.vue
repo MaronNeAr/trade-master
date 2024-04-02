@@ -62,7 +62,7 @@ const getPostionList = async() => {
   }
   positionList.value = result.data
 
-  result.data.forEach(async (item) => {
+  positionList.value.forEach(async (item) => {
         const ret = await HttpManager.getMarketData(item.securityCode).catch(error => {
             console.log(error)
             return
@@ -73,7 +73,6 @@ const getPostionList = async() => {
         }
         item.securityName = ret.data.name
         item.currentPrice = ret.data.lastPrice
-        positionList.value.push(item)
     });
 }
 

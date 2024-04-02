@@ -9,8 +9,27 @@
         where code = #{code}
     </select>
 
+    <select id="selectQuantMarketByCode" resultType="com.example.transaction.model.vo.QuantMarketVo">
+        select last_price,
+        inside_disc - lag(inside_disc) over (order BY market_id) as inside_diff,
+        outside_disc - lag(outside_disc) over (order BY market_id) as outside_diff,
+        create_time
+        from transaction_market
+        where code = #{code}
+    </select>
+
     <select id="selectMarketByCodeAndDate" resultType="com.example.transaction.model.po.TransactionMarket">
         select market_id, name, code, last_price, previous_close, open, volume_hands, outside_disc, inside_disc, buy1, buy2, buy3, buy4, buy5, buy1_volume, buy2_volume, buy3_volume, buy4_volume, buy5_volume, sell1, sell2, sell3, sell4, sell5, sell1_volume, sell2_volume, sell3_volume, sell4_volume, sell5_volume, recent_transaction, time, `change`, change_percent, high, low, price_volume_turnover, volume_hands2, turnover_ten_thousand, turnover_rate, pe_ratio, `empty`, high2, low2, amplitude, circulation_market_value, total_market_value, pb_ratio, limit_up_price, limit_down_price, create_time
+        from transaction_market
+        where code = #{code}
+        and create_time between #{startDate} and #{endDate}
+    </select>
+
+    <select id="selectQuantMarketByCodeAndDate" resultType="com.example.transaction.model.vo.QuantMarketVo">
+        select last_price,
+        inside_disc - lag(inside_disc) over (order BY market_id) as inside_diff,
+        outside_disc - lag(outside_disc) over (order BY market_id) as outside_diff,
+        create_time
         from transaction_market
         where code = #{code}
         and create_time between #{startDate} and #{endDate}

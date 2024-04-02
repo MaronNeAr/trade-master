@@ -1,0 +1,12 @@
+/trade-web/node_modules/
+/trade-web/public/
+/.idea/
+/logs/
+/trade-transaction/trade-transaction-model/target/
+/trade-transaction/trade-transaction-service/target/
+/trade-transaction/trade-transaction-api/target/
+/trade-message-sdk/target/
+/trade-gateway/target/
+/trade-checkcode/target/
+/trade-base/target/
+/trade-auth/target/

@@ -31,10 +31,10 @@
             <v-text-field label="金额" variant="underlined" type="numbder" :rules="[positiveNumberRule]" v-model="amount"></v-text-field>
             <v-row>
                 <v-col cols="6" align="right">
-                    <v-btn color="green" @click="transfer">充值</v-btn>
+                    <v-btn color="green" @click="transfer" width="400">充值</v-btn>
                 </v-col>
                 <v-col cols="6">
-                  <v-btn color="red" @click="withdraw">提现</v-btn>
+                  <v-btn color="red" @click="withdraw" width="400">提现</v-btn>
                 </v-col>
             </v-row>
         </v-col>
@@ -46,6 +46,11 @@
             </v-row>
         </v-col>
     </v-row>
+    <br />
+    <h3>交易明细</h3>
+    <v-divider></v-divider>
+    <record-page></record-page>
+
     <trade-verify v-if="verifyDialog" @verify="handleVerify"></trade-verify>
     <v-snackbar :timeout="2000" v-model="snackbar">
       {{ snackbarText }}
@@ -62,6 +67,7 @@ import {
     ref
 } from 'vue'
 import TradeVerify from '@/components/TradeVerify.vue'
+import RecordPage from '@/views/TransactionPages/RecordPage.vue'
 
 const assets = ref({
     brokerage_assets: 200000.00,
@@ -235,6 +241,8 @@ onMounted(() => {
 <style scoped>
 .account-card {
     padding: 20px;
+    height: 600px;
+    overflow: scroll;
 }
 
 .avatar-box {
@@ -258,7 +266,7 @@ onMounted(() => {
 }
 
 .brokerage-account-list {
-  height: 300px;
+  height: 200px;
   overflow: scroll;
 }
 </style>

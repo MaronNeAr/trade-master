@@ -2,11 +2,10 @@ package com.example.transaction.api;
 
 import com.example.transaction.config.common.ErrorMessage;
 import com.example.transaction.config.common.SuccessMessage;
-import com.example.transaction.model.dto.TransactionBrokerageAccountDTO;
+import com.example.transaction.model.dto.TransactionBrokerageAccountDto;
 import com.example.transaction.model.po.TransactionBrokerage;
 import com.example.transaction.service.AccountService;
 import com.example.transaction.service.AuthService;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -99,7 +97,7 @@ public class AccountController {
         String uid = authService.getUidByPrincipal(principal);
         if (uid == null) return new ErrorMessage("用户认证失败，请重新登录");
         try {
-            return new SuccessMessage<List<TransactionBrokerageAccountDTO>>("获取证券账户成功", accountService.getBrokerageAccountByUserId(uid)).getMessage();
+            return new SuccessMessage<List<TransactionBrokerageAccountDto>>("获取证券账户成功", accountService.getBrokerageAccountByUserId(uid)).getMessage();
         } catch(Exception e) {
             System.out.println(e);
             return new ErrorMessage("获取证券账户失败").getMessage();
