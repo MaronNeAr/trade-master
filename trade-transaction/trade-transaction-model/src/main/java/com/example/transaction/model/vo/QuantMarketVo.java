@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 public class QuantMarketVo {
     private String lastPrice;
-    private String insideDisc;
-    private String outsideDisc;
+    private String insideDiff;
+    private String outsideDiff;
     private Timestamp createTime;
 }

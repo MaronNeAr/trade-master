@@ -5,7 +5,6 @@ import com.example.transaction.mapper.TransactionMarketMapper;
 import com.example.transaction.mapper.TransactionSecurityMapper;
 import com.example.transaction.model.po.StockPriceSeries;
 import com.example.transaction.model.po.StockQuote;
-import com.example.transaction.model.po.TransactionMarket;
 import com.example.transaction.model.po.TransactionSecurity;
 import com.example.transaction.model.vo.QuantMarketVo;
 import com.example.transaction.service.MarketService;

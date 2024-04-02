@@ -10,7 +10,10 @@
     </select>
 
     <select id="selectQuantMarketByCode" resultType="com.example.transaction.model.vo.QuantMarketVo">
-        select last_price, inside_disc, outside_disc, create_time
+        select last_price,
+        inside_disc - lag(inside_disc) over (order BY market_id) as inside_diff,
+        outside_disc - lag(outside_disc) over (order BY market_id) as outside_diff,
+        create_time
         from transaction_market
         where code = #{code}
     </select>
@@ -23,7 +26,10 @@
     </select>
 
     <select id="selectQuantMarketByCodeAndDate" resultType="com.example.transaction.model.vo.QuantMarketVo">
-        select last_price, inside_disc, outside_disc, create_time
+        select last_price,
+        inside_disc - lag(inside_disc) over (order BY market_id) as inside_diff,
+        outside_disc - lag(outside_disc) over (order BY market_id) as outside_diff,
+        create_time
         from transaction_market
         where code = #{code}
         and create_time between #{startDate} and #{endDate}

@@ -3,7 +3,7 @@ package com.example.transaction.service.impl;
 import com.example.transaction.mapper.TransactionAccountMapper;
 import com.example.transaction.mapper.TransactionBrokerageAccountMapper;
 import com.example.transaction.mapper.TransactionBrokerageMapper;
-import com.example.transaction.model.dto.TransactionBrokerageAccountDTO;
+import com.example.transaction.model.dto.TransactionBrokerageAccountDto;
 import com.example.transaction.model.po.TransactionBrokerage;
 import com.example.transaction.model.po.TransactionBrokerageAccount;
 import com.example.transaction.service.AccountService;
@@ -103,7 +103,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public List<TransactionBrokerageAccountDTO> getBrokerageAccountByUserId(String uid) {
+    public List<TransactionBrokerageAccountDto> getBrokerageAccountByUserId(String uid) {
         return brokerageAccountMapper.selectBrokerageAccountByUserId(uid);
     }
 }
