@@ -4,8 +4,8 @@
         <v-card-text>
             <v-tabs v-model="tab">
                 <v-tab value="password">密码登录</v-tab>
-                <v-tab value="checkcode">验证码登录</v-tab>
                 <v-tab value="register">账户注册</v-tab>
+                <v-tab value="findPsw">密码找回</v-tab>
             </v-tabs>
 
             <v-card-text>
@@ -15,24 +15,42 @@
                         <v-text-field label="密码" type="password" variant="underlined" v-model="password"></v-text-field>
                         <v-text-field label="验证码" variant="underlined" v-model="checkcode">
                             <template v-slot:append>
-                                <v-img :src="checkCodePic" width="160" @click="getCheckCode" />
+                                <v-img :src="checkcodePic" width="160" @click="getCheckcode" />
                             </template>
                         </v-text-field>
-                    </v-window-item>
-
-                    <v-window-item value="checkcode">
-                        Two
+                        <v-btn color="primary" block variant="outlined" @click="login">登录</v-btn>
                     </v-window-item>
 
                     <v-window-item value="register">
-                        Two
+                        <v-text-field label="用户名" variant="underlined" v-model="username"></v-text-field>
+                        <v-text-field label="昵称" variant="underlined" v-model="nickname"></v-text-field>
+                        <v-text-field label="密码" type="password" variant="underlined" v-model="password"></v-text-field>
+                        <v-text-field label="确认密码" type="password" variant="underlined" v-model="confirmpwd"></v-text-field>
+                        <v-text-field label="手机号" variant="underlined" v-model="cellphone"></v-text-field>
+                        <v-text-field label="邮箱" variant="underlined" v-model="email">
+                            <template v-slot:append>
+                                <v-btn color="primary" variant="underlined" @click="sendEmail">发送验证码</v-btn>
+                            </template>
+                        </v-text-field>
+                        <v-text-field label="验证码" variant="underlined" v-model="checkcode"></v-text-field>
+                        <v-btn color="black" block variant="outlined" @click="register">注册</v-btn>
+                    </v-window-item>
+
+                    <v-window-item value="findPsw">
+                        <v-text-field label="手机号" variant="underlined" v-model="cellphone"></v-text-field>
+                        <v-text-field label="邮箱" variant="underlined" v-model="email">
+                            <template v-slot:append>
+                                <v-btn color="primary" variant="underlined" @click="sendEmail">发送验证码</v-btn>
+                            </template>
+                        </v-text-field>
+                        <v-text-field label="验证码" variant="underlined" v-model="checkcode"></v-text-field>
+                        <v-text-field label="密码" type="password" variant="underlined" v-model="password"></v-text-field>
+                        <v-text-field label="确认密码" type="password" variant="underlined" v-model="confirmpwd"></v-text-field>
+                        <v-btn color="red" block variant="outlined" @click="findPsw">找回密码</v-btn>
                     </v-window-item>
 
                 </v-window>
             </v-card-text>
-            <v-card-actions>
-                <v-btn color="primary" block  @click="login">登录</v-btn>
-            </v-card-actions>
         </v-card-text>
     </v-card>
 </v-dialog>
@@ -52,26 +70,29 @@ const emits = defineEmits(['toggleLogin', 'message', 'success'])
 const tab = ref(0)
 const dialog = ref(true)
 const username = ref()
+const nickname = ref()
 const password = ref()
+const confirmpwd = ref()
+const cellphone = ref()
+const email = ref()
 const checkcode = ref()
 const accessToken = ref()
-const checkCodeKey = ref()
-const checkCodePic = ref()
+const checkcodeKey = ref()
+const checkcodePic = ref()
 
-const getCheckCode = async() => {
-    const result = await HttpManager.getCheckCodePic().catch(error => {
+const getCheckcode = async() => {
+    const result = await HttpManager.getCheckcodePic().catch(error => {
         console.log(error)
         return
     })
-    if (result?.key) checkCodeKey.value = result.key
-    if (result?.aliasing) checkCodePic.value = result.aliasing
+    if (result?.key) checkcodeKey.value = result.key
+    if (result?.aliasing) checkcodePic.value = result.aliasing
 }
 
 const login = async() => {
-    // console.log(username.value + password.value)
-    const flag = await verifyCheckCode(checkCodeKey.value, checkcode.value)
+    const flag = await verifyCheckcode(checkcodeKey.value, checkcode.value)
     if (!flag) {
-        getCheckCode()
+        getCheckcode()
         emits('message', "验证码错误，请重新输入")
         checkcode.value = ""
         return
@@ -80,11 +101,66 @@ const login = async() => {
     if (accessToken.value) getUserInfo(accessToken.value)
 }
 
-const verifyCheckCode = async(key, code) =>{
+const register = async() => {
+    const params = {
+        username: username.value,
+        nickname: nickname.value,
+        password: password.value,
+        confirmpwd: confirmpwd.value,
+        cellphone: cellphone.value,
+        email: email.value,
+        checkcode: checkcode.value
+    }
+    const result = await HttpManager.register(params).catch(error => {
+        console.log(error)
+        return
+    })
+    if (!result ?. success) {
+        console.log(result ?. message)
+        emits('message', result ?. message)
+        return
+    }
+    emits('message', result ?. message)
+    await passwordAuth(username.value, password.value)
+    if (accessToken.value) getUserInfo(accessToken.value)
+}
+
+const findPsw = async() => {
+    const params = {
+        cellphone: cellphone.value,
+        email: email.value,
+        password: password.value,
+        confirmpwd: confirmpwd.value,
+        checkcode: checkcode.value
+    }
+    const result = await HttpManager.findPassword(params).catch(error => {
+        console.log(error)
+        return
+    })
+    if (!result ?. success) {
+        console.log(result ?. message)
+        emits('message', result ?. message)
+        return
+    }
+    emits('message', result ?. message)
+    await passwordAuth(username.value, password.value)
+    if (accessToken.value) getUserInfo(accessToken.value)
+}
+
+const sendEmail = () => {
+    const params = new URLSearchParams()
+    params.append("email", email.value)
+    HttpManager.sendEmail(params).catch(error => {
+        console.log(error)
+        return
+    })
+}
+
+const verifyCheckcode = async(key, code) =>{
     const params = new URLSearchParams()
     params.append("key", key)
     params.append("code", code)
-    const result = await HttpManager.verifyCheckCode(params).catch(error => {
+    const result = await HttpManager.verifyCheckcode(params).catch(error => {
         console.log(error)
         return false
     })
@@ -134,6 +210,7 @@ watch(dialog, () => {
 })
 
 onMounted(() => {
-    getCheckCode()
+    getCheckcode()
+    
 })
 </script>

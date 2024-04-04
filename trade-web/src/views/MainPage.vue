@@ -19,6 +19,7 @@ import TradeHeader from '@/components/layout/TradeHeader.vue'
 import TradeLogin from '@/components/TradeLogin.vue'
 import TradeInfo from '@/components/TradeInfo.vue'
 import Cookies from 'js-cookie'
+import router from '@/router'
 import { onMounted, ref } from 'vue'
 import { HttpManager } from '@/api'
 
@@ -58,14 +59,17 @@ const initUserInfo = async(token) => {
         console.log(userInfo)
         Cookies.set("nickname", userInfo.nickname)
         active.value = true
+        return
     }
     else if (result?.error) snackbarText.value = result?.error_description
     else snackbarText.value = "服务器出错，请稍后再试"
+    router.push("/login")
 }
 
 onMounted(() => {
     const token = Cookies.get("token")
     if (token) initUserInfo(token)
+    else router.push("/login")
 })
 </script>
 

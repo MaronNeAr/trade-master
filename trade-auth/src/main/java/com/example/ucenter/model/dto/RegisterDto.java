@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 public class RegisterDto {
     private String cellphone;
     private String checkcode;
-    private String checkcodekey;
     private String confirmpwd;
     private String email;
     private String nickname;

@@ -41,6 +41,7 @@
 <script setup>
 import { ref, defineEmits, watch, onMounted } from 'vue'
 import Cookies from 'js-cookie'
+import router from '@/router'
 import { HttpManager } from '@/api'
 
 const emits = defineEmits(['toggleInfo', 'message', 'exit'])
@@ -55,6 +56,7 @@ const logout = () => {
     Cookies.remove("nickname")
     Cookies.remove("token")
     emits('exit', false)
+    router.push("/login")
     closeInfoDialog()
 }
 

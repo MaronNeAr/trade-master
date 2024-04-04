@@ -30,7 +30,12 @@ const routes = [
       component: () => import('@/views/AccountPage.vue'),
       meta: { title: '账户' }
     }]
-  }
+  },
+  {
+    path: '/login',
+    component: () => import('@/views/LoginPage.vue'),
+    meta: { title: '登录' },
+  },
 ]
 
 const router = createRouter({

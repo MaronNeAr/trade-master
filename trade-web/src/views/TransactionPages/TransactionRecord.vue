@@ -41,7 +41,6 @@
 </div>
 </template>
 
-  
 <script setup>
 import {
     HttpManager
@@ -57,7 +56,7 @@ const props = defineProps(['refreshState'])
 const recordList = ref([])
 
 watch(() => props.refreshState, () => {
-  getRecordList()
+    getRecordList()
 })
 
 const getRecordStatus = (status) => {
@@ -113,7 +112,6 @@ onMounted(() => {
 })
 </script>
 
-  
 <style scoped>
 .filled {
     color: blue;

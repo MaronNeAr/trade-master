@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 public class FindPswDto {
     String cellphone;
     String email;
-    String checkcodekey;
     String checkcode;
     String password;
     String confirmpwd;

@@ -71,20 +71,15 @@
                         </template>
                     </v-slider>
                     <br />
-                    <v-btn-toggle
-                        v-model="position"
-                        rounded
-                        color="primary"
-                        group
-                    >
+                    <v-btn-toggle v-model="position" rounded color="primary" group>
                         <v-btn value="self">自选</v-btn>
                         <v-btn value="quarter">1/4仓</v-btn>
                         <v-btn value="half">半仓</v-btn>
                         <v-btn value="three-quarter">3/4仓</v-btn>
                         <v-btn value="full">全仓</v-btn>
                     </v-btn-toggle>
-                    <br/>
-                    <br/>
+                    <br />
+                    <br />
                     <div class="button-group">
                         <v-btn prepend-icon="mdi-reload" align="right">稍后再买</v-btn>&nbsp;&nbsp;&nbsp;&nbsp;
                         <v-btn prepend-icon="mdi-check" align="right" color="primary" @click="buy">买入</v-btn>
@@ -95,7 +90,7 @@
     </v-row>
     <trade-verify v-if="verifyDialog" @verify="handleBuy"></trade-verify>
     <v-snackbar :timeout="2000" v-model="snackbar">
-      {{ snackbarText }}
+        {{ snackbarText }}
     </v-snackbar>
 </div>
 </template>
@@ -222,6 +217,7 @@ watch(securityCode, async (code) => {
         console.log(result ?.message)
         return
     }
+    maxVolume.value = 10000
 
     buyDepth.value.forEach((item, idx) => {
         item[0] = result.data['buy' + (idx + 1)]
@@ -239,7 +235,10 @@ watch(securityCode, async (code) => {
 })
 
 watch(position, () => {
-    console.log(position)
+    if (position.value == "quarter") volume.value = Math.floor(maxVolume.value / 4 / 100) * 100
+    else if (position.value == "half") volume.value = Math.floor(maxVolume.value / 2 / 100) * 100
+    else if (position.value == "three-quarter") volume.value = Math.floor(maxVolume.value / 4 * 3 / 100) * 100
+    else if (position.value == "full") volume.value = Math.floor(maxVolume.value / 100) * 100
 })
 
 const getDefaultMarketList = async () => {
@@ -268,7 +267,7 @@ const buy = () => {
     verifyDialog.value = true
 }
 
-const handleBuy = async(state) => {
+const handleBuy = async (state) => {
     verifyDialog.value = false
     if (!state) {
         showMessage("验证码错误")

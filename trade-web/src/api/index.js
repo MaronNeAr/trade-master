@@ -1,9 +1,13 @@
-import { get, post, getByToken, postByToken } from './request'
+import { get, post, getByToken, postByToken, postByJson } from './request'
 
 const HttpManager = {
-  getCheckCodePic: () => post(`checkcode/pic`),
-  verifyCheckCode: (params) => post(`checkcode/verify`, params),
+  getCheckcodePic: () => post(`checkcode/pic`),
+  verifyCheckcode: (params) => post(`checkcode/verify`, params),
+  sendEmail: (params) => post(`checkcode/email`, params),
+
   passwordAuth: (username) => post(`auth/oauth/token?client_id=TradeWebApp&client_secret=TradeWebApp&grant_type=password&username=` + username),
+  register: (params) => postByJson(`auth/register`, params),
+  findPassword: (params) => postByJson(`auth/findpassword`, params),
   checkToken: (params) => post(`auth/oauth/check_token`, params), 
 
   getBrokerages: () => get(`transaction/brokerages`),
