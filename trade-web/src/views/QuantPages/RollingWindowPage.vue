@@ -2,7 +2,7 @@
 <div>
     <v-row>
         <v-col cols="4">
-            <v-combobox v-model="securityCodes" :items="sse50List" label="证券代码/名称" chips multiple variant="underlined"></v-combobox>
+            <v-autocomplete v-model="securityCode" :items="sse50List" label="证券代码/名称" variant="underlined"></v-autocomplete>
             <v-text-field label="开始时间" variant="underlined" @click="startDatePickerShow = !startDatePickerShow; endDatePickerShow = false" v-model="startFormattedDate"></v-text-field>
             <div class="date-picker" v-if="startDatePickerShow">
                 <v-date-picker color="primary" :allowed-dates="allowedStartDates" elevation="12" v-model="startDate" @update:model-value="startDatePickerShow = false"></v-date-picker>
@@ -11,7 +11,7 @@
             <div class="date-picker" v-if="endDatePickerShow">
                 <v-date-picker color="primary" :allowed-dates="allowedEndDates" elevation="12" range v-model="endDate" @update:model-value="endDatePickerShow = false"></v-date-picker>
             </div>
-            <v-slider label="窗口大小" v-model="window" class="align-center" max="1000" min="5" step="5" hide-details>
+            <v-slider label="窗口大小" v-model="window" class="align-center" max="500" min="5" step="5" hide-details>
                 <template v-slot:append>
                     <v-text-field v-model="window" hide-details single-line density="compact" type="number" style="width: 56px" variant="underlined"></v-text-field>
                 </template>
@@ -23,7 +23,7 @@
                 </template>
             </v-slider>
             <br />
-            <v-slider label="默认交易量" v-model="volume" class="align-center" max="20000" min="100" step="100" hide-details>
+            <v-slider label="默认交易量" v-model="volume" class="align-center" max="5000" min="100" step="100" hide-details>
                 <template v-slot:append>
                     <v-text-field v-model="volume" hide-details single-line density="compact" type="number" style="width: 56px" variant="underlined"></v-text-field>
                 </template>
@@ -42,10 +42,24 @@
             </v-slider>
         </v-col>
         <v-col cols="8">
-            <quant-chart class="quant-chart" :marketData="marketDataMap" :chartConfig="chartConfig"></quant-chart>
+            <quant-chart class="quant-chart" :marketData="marketData" :chartConfig="chartConfig"></quant-chart>
         </v-col>
     </v-row>
+    <v-btn class="config-btn" color="black" @click="configShow = true">CONFIG</v-btn>
     <v-btn class="exec-btn" color="primary" @click="execuate">EXEC</v-btn>
+    <trade-quant v-if="quantDialog" @toggleQuant="toggleQuant" :backtestResult="backtestResult"></trade-quant>
+    <v-dialog v-model="configShow" width="300">
+        <v-card title="量化交易配置">
+            <v-card-text>
+                <v-text-field label="初始资产" variant="plain" v-model="init_cash"></v-text-field>
+                <v-text-field label="佣金比例" variant="plain" v-model="commision_rate"></v-text-field>
+            </v-card-text>
+            <v-card-actions>
+                <v-btn color="primary" block  @click="configShow = false">SAVE</v-btn>
+            </v-card-actions>
+        </v-card>
+        
+    </v-dialog>
     <v-snackbar :timeout="2000" v-model="snackbar">
         {{ snackbarText }}
     </v-snackbar>
@@ -56,6 +70,7 @@
     
 <script setup>
 import QuantChart from '@/components/RollingQuantChart.vue'
+import TradeQuant from '@/components/TradeQuant.vue'
 
 import {
     HttpManager
@@ -67,11 +82,11 @@ import {
     watch
 } from 'vue'
 
-const securityCodes = ref([])
+const securityCode = ref('sh600519')
 const sse50List = ref([])
-const marketDataMap = ref({})
+const marketData = ref([])
 
-const startDate = ref(new Date(2024, 2, 1))
+const startDate = ref(new Date(2024, 3, 1))
 const endDate = ref(new Date())
 const startFormattedDate = computed(() => formattedDate(startDate.value))
 const endFormattedDate = computed(() => formattedDate(endDate.value))
@@ -92,8 +107,19 @@ const chartConfig = computed(() => {
     }
 })
 
+const quantDialog = ref(false)
+const backtestResult = ref({})
+const configShow = ref(false)
+const commision_rate = ref(0.0001)
+const init_cash = ref(100000000)
+
+const toggleQuant = () => {
+    quantDialog.value = false
+}
+
 const snackbar = ref(false)
 const snackbarText = ref("")
+
 
 const formattedDate = (date) => {
     const year = date.getFullYear();
@@ -124,11 +150,10 @@ const getSSE50List = async () => {
         })
     });
     if (result.data.length == 0) return
-    securityCodes.value.push(sse50List.value[14])
     refreshMarket()
 }
 
-watch(securityCodes, () => {
+watch(securityCode, () => {
     refreshMarket()
 })
 watch(startDate, () => {
@@ -138,25 +163,23 @@ watch(endDate, () => {
     refreshMarket()
 })
 
-const refreshMarket = () => {
-    securityCodes.value.forEach(async (item) => {
-        if (item.value.length < 2) return
-        const params = new URLSearchParams()
-        const code = item.value.substring(2)
-        params.append('code', code)
-        params.append('start', startFormattedDate.value)
-        params.append('end', endFormattedDate.value)
-        const result = await HttpManager.getQuantMarketData(params).catch(error => {
-            console.log(error)
-            return
-        })
-        if (!result ?.success) {
-            console.log(result ?.message)
-            showMessage(result ?.message)
-            return
-        }
-        marketDataMap.value[code] = result.data
+const refreshMarket = async () => {
+    if (securityCode.value == undefined || securityCode.value.length < 2) return
+    const params = new URLSearchParams()
+    const code = securityCode.value.substring(2)
+    params.append('code', code)
+    params.append('start', startFormattedDate.value)
+    params.append('end', endFormattedDate.value)
+    const result = await HttpManager.getQuantMarketData(params).catch(error => {
+        console.log(error)
+        return
     })
+    if (!result ?.success) {
+        console.log(result ?.message)
+        showMessage(result ?.message)
+        return
+    }
+    marketData.value = result.data
 }
 
 const allowedStartDates = (date) => {
@@ -168,29 +191,32 @@ const allowedEndDates = (date) => {
     return date <= today && date > startDate.value
 }
 
-const execuate = () => {
+const execuate = async() => {
     const params = new URLSearchParams()
     const json = JSON.stringify({
-        code: securityCodes.value[0].value.substring(2),
+        code: securityCode.value.substring(2),
         start: startFormattedDate.value,
         end: endFormattedDate.value,
         window: window.value,
         offset: offset.value,
         default_volume: volume.value,
         high_ratio: highRatio.value / 1000,
-        low_ratio: lowRatio.value / 1000
+        low_ratio: lowRatio.value / 1000,
+        commision_rate: Number(commision_rate.value),
+        init_cash: Number(init_cash.value)
     })
     params.append("json_req", json)
-    const result = HttpManager.rollingWindowQuant(params).catch(error => {
+    const result = await HttpManager.rollingWindowQuant(params).catch(error => {
         console.log(error)
         return
     })
     if (!result ?.success) {
         console.log(result ?.message)
-        showMessage(result ?.message)
+        showMessage("获取量化回测分析数据失败")
         return
     }
-    showMessage(result)
+    backtestResult.value = result.data
+    quantDialog.value = true
 }
 
 onMounted(() => {
@@ -213,9 +239,17 @@ onMounted(() => {
     height: 480px;
 }
 
+.config-btn {
+    position: absolute;
+    width: 100px;
+    right: 160px;
+    bottom: 60px;
+}
+
 .exec-btn {
     position: absolute;
+    width: 100px;
     right: 40px;
-    bottom: 100px;
+    bottom: 60px;
 }
 </style>

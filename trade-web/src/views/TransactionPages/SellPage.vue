@@ -26,7 +26,7 @@
           </v-col>
           <v-col cols="8">
               <div :class="transactionRecordClass">
-                  <transaction-record></transaction-record>
+                  <transaction-record :refreshState="recordState"></transaction-record>
               </div>
               <br />
               <v-row v-if="securityData.code">
@@ -198,6 +198,7 @@
   }
   
   const verifyDialog = ref(false)
+  const recordState = ref(false)
   const snackbar = ref(false)
   const snackbarText = ref("")
   
@@ -280,6 +281,7 @@
       if (!result ?.success) showMessage(result ?.message)
       else showMessage(result ?.message)
       emits("refresh")
+      recordState.value = !recordState.value
   }
   
   const showMessage = (message) => {

@@ -124,16 +124,18 @@ const movingAverage = (data, windowSize) => {
     return movingAverages;
 }
 
-watch(props.marketData, () => {
-    for (const code in props.marketData) {
-        x_axis.value = []
-        y_series.value = []
-        const marketList = props.marketData[code]
-        marketList.forEach(item => {
-            x_axis.value.push(new Date(item.createTime))
-            y_series.value.push(Number(item.lastPrice))
-        });
-    }
+watch(() => props.marketData, () => {
+    x_axis.value = []
+    y_series.value = []
+    high_line.value = []
+    low_line.value = []
+    const marketList = props.marketData
+    marketList.forEach(item => {
+        x_axis.value.push(new Date(item.createTime))
+        y_series.value.push(Number(item.lastPrice))
+        high_line.value.push(Number(item.lastPrice * (1 + props.chartConfig.highRatio / 1000)))
+        low_line.value.push(Number(item.lastPrice * (1 - props.chartConfig.lowRatio / 1000)))
+    });
     if (x_axis.value.length == 0) return
     option.series[0].data = y_series.value
     option.series[1].data = movingAverage(y_series.value, props.chartConfig.window)

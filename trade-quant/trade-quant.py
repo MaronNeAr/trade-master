@@ -7,16 +7,16 @@ import pandas as pd
 app = Flask(__name__)
 CORS(app, resources={r"/quant/*": {"origins": "*"}})
 
-con = pymysql.connect(host="127.0.0.1",user="root",password="12345678",db="trade_transaction", init_command="SET time_zone = '+08:00'")
+con = pymysql.connect(host="127.0.0.1",user="root",password="123456",db="trade_transaction", init_command="SET time_zone = '+08:00'")
 
 def query_market(code, start, end):
     return "SELECT * FROM transaction_market WHERE code = '" + code + "'AND create_time BETWEEN '" + start + "' AND '" + end + "';"
 
 def query_fisrt_close(code, date):
-    return "SELECT previous_close FROM transaction_market WHERE code = '" + code + "'AND create_time > '" + date + "' LIMIT 1;"
+    return "SELECT last_price FROM transaction_market WHERE code = '" + code + "'AND create_time >= '" + date + "' LIMIT 1;"
 
 def query_last_close(code, date):
-    return "SELECT previous_close FROM transaction_market WHERE code = '" + code + "'AND create_time < '" + date + "' ORDER BY create_time DESC LIMIT 1;"
+    return "SELECT last_price FROM transaction_market WHERE code = '" + code + "'AND create_time <= '" + date + "' ORDER BY create_time DESC LIMIT 1;"
 
 # 回测
 def backtest(df, signals, volumes = [], commission_rate = 0.0005, init_cash = 100000000):
@@ -39,6 +39,7 @@ def backtest(df, signals, volumes = [], commission_rate = 0.0005, init_cash = 10
         price = df['last_price'].iloc[i]
         time = df['create_time'].iloc[i]
         volume = (volumes[i] + 50) // 100 * 100;
+
         # 加仓
         if signals[i] == 'buy' and cash >= price * volume:
             cash -= price * volume
@@ -70,8 +71,8 @@ def backtest(df, signals, volumes = [], commission_rate = 0.0005, init_cash = 10
 
 # 实时行情对比
 def compare(init_assets, last_assets, code, start, end):
-    start_df = pd.read_sql(query_fisrt_close(code, start), con)['previous_close']
-    end_df = pd.read_sql(query_last_close(code, end), con)['previous_close']
+    start_df = pd.read_sql(query_fisrt_close(code, start), con)['last_price']
+    end_df = pd.read_sql(query_last_close(code, end), con)['last_price']
     
     if len(start_df) == 0 or len(end_df) == 0:
         return {}
@@ -100,7 +101,7 @@ def rolling_window():
     default_volume = req['default_volume'] if 'default_volume' in req else 1000
     high_ratio = req['high_ratio'] if 'high_ratio' in req else 0.001
     low_ratio = req['low_ratio'] if 'low_ratio' in req else 0.001
-    commission_rate = req['commission_rate'] if 'commission_rate' in req else 0.0000
+    commission_rate = req['commission_rate'] if 'commission_rate' in req else 0.0005
     init_cash = req['init_cash'] if 'init_cash' in req else 100000000
 
     code, start, end = req['code'], req['start'], req['end']
@@ -132,10 +133,10 @@ def rolling_window():
         'message':'获取移动均值-量化交易结果成功',
         'data': {
             'trades': trades[window + offset: window + offset + 100],
-            'total_asset': total_assets,
-            'cash': cash,
-            'market_value': market_value,
-            'commission': commission,
+            'total_asset': '{:.2f}'.format(total_assets),
+            'cash': '{:.2f}'.format(cash),
+            'market_value': '{:.2f}'.format(market_value),
+            'commission': '{:.2f}'.format(commission),
             'compare_data': compare_data
         }
     })
@@ -178,10 +179,10 @@ def in_outside_disc():
         'message':'获取内外盘-量化交易结果成功',
         'data': {
             'trades': trades[:100],
-            'total_asset': total_assets,
-            'cash': cash,
-            'market_value': market_value,
-            'commission': commission,
+            'total_asset': '{:.2f}'.format(total_assets),
+            'cash': '{:.2f}'.format(cash),
+            'market_value': '{:.2f}'.format(market_value),
+            'commission': '{:.2f}'.format(commission),
             'compare_data': compare_data
         }
     })

@@ -26,7 +26,7 @@
         </v-col>
         <v-col cols="8">
             <div :class="transactionRecordClass">
-                <transaction-record></transaction-record>
+                <transaction-record :refreshState="recordState"></transaction-record>
             </div>
             <br />
             <v-row v-if="securityData.code">
@@ -198,6 +198,7 @@ const search = async () => {
 }
 
 const verifyDialog = ref(false)
+const recordState = ref(false)
 const snackbar = ref(false)
 const snackbarText = ref("")
 
@@ -235,6 +236,10 @@ watch(securityCode, async (code) => {
     for (let i = 1; i <= 5; i++) maxVolume.value = Math.min(maxVolume.value, result.data['buy' + i + 'Volume'] * 100)
     transactionRecordClass.value = 'transaction-record'
     // console.log(maxVolumn.value)
+})
+
+watch(position, () => {
+    console.log(position)
 })
 
 const getDefaultMarketList = async () => {
@@ -280,6 +285,7 @@ const handleBuy = async(state) => {
     if (!result ?.success) showMessage(result ?.message)
     else showMessage(result ?.message)
     emits("refresh")
+    recordState.value = !recordState.value
 }
 
 const showMessage = (message) => {

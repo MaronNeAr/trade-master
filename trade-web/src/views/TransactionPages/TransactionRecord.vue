@@ -1,113 +1,131 @@
 <template>
-  <div>
-    <div v-for="record, idx in recordList" :key="idx">
-        <v-row :class="record.transactionType == 'buy' ? 'red' : 'green'">
-            <v-col cols="6">
-                <v-stepper :model-value="status2ModelValue(record.transactionStatus)" >
-                    <v-stepper-header>
-                      <v-stepper-item
-                        complete
-                        title="发起交易"
-                        value="1"
-                      ></v-stepper-item>
-                
-                      <v-divider></v-divider>
-                
-                      <v-stepper-item
-                        :rules="[() => record.transactionStatus != 'cancelled']"
-                        :title="record.transactionStatus != 'cancelled' ? '风险检测' : '撤单'"
-                        value="2"
-                      ></v-stepper-item>
-                
-                      <v-divider></v-divider>
-                
-                      <v-stepper-item
-                        title="交易完成"
-                        value="3"
-                      ></v-stepper-item>
-                    </v-stepper-header>
-                </v-stepper>
-            </v-col>
-            <v-col cols="2">
-                <v-list-item :title="record.securityCode" :subtitle="record.securityName" height="70"></v-list-item>
-            </v-col>
-            <v-col cols="2">
-                <v-list-item :title="(record.transactionPrice * record.transactionVolume).toFixed(2)" :subtitle="record.transactionVolume" height="70"></v-list-item>
-            </v-col>
-            <v-col cols="2">
-                <v-list-item :title="record.transactionPrice.toFixed(2)" :subtitle="record.currentPrice.toFixed(2)" height="70"></v-list-item>
-            </v-col>
-        </v-row>
-        <br />
-    </div>
-  </div>
+<div>
+    <v-table fixed-header height="500px">
+        <thead>
+            <tr>
+                <th class="text-center">
+                    证券代码
+                </th>
+                <th class="text-center">
+                    证券简称
+                </th>
+                <th class="text-center">
+                    交易类型
+                </th>
+                <th class="text-right">
+                    交易价格
+                </th>
+                <th class="text-right">
+                    交易量
+                </th>
+                <th class="text-center">
+                    交易状态
+                </th>
+                <th class="text-center">
+                    交易时间
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="record, idx in recordList" :key="idx">
+                <td class="text-center">{{ record.securityCode }}</td>
+                <td class="text-center">{{ record.securityName }}</td>
+                <td :class="record.transactionType" class="text-center">{{ record.transactionType == 'buy' ? '买入':'卖出' }}</td>
+                <td class="text-right">{{ record.transactionPrice.toFixed(2) }}</td>
+                <td class="text-center">{{ record.transactionVolume }}</td>
+                <td :class="record.transactionStatus" class="text-center">{{ getRecordStatus(record.transactionStatus) }}</td>
+                <td class="text-center">{{ formatDateTime(record.transactionTime) }}</td>
+            </tr>
+        </tbody>
+    </v-table>
+</div>
 </template>
 
+  
 <script setup>
-import { onMounted, ref } from 'vue'
-import { HttpManager } from "@/api"
+import {
+    HttpManager
+} from '@/api'
+import {
+    onMounted,
+    ref,
+    defineProps,
+    watch
+} from 'vue'
 
+const props = defineProps(['refreshState'])
 const recordList = ref([])
 
-const status2ModelValue = (status) => {
-  if (status == 'active') return 0
-  else if (status == 'cancelled') return 1
-  else return 2
+watch(() => props.refreshState, () => {
+  getRecordList()
+})
+
+const getRecordStatus = (status) => {
+    if (status == 'active') return '发起交易'
+    else if (status == 'filled') return '交易完成'
+    else if (status == 'cancelled') return '已撤单'
+    else return '--'
 }
 
-const getAllTradeDetails = async() => {
-  const result = await HttpManager.details().catch(error => {
-    console.log(error)
-    return
-  })
-  if (!result ?. success) {
-    console.log(result ?.message)
-    return
-  }
-  recordList.value = []
-  result.data.forEach(async(item) => {
-    const ret = await HttpManager.getMarketData(item.securityCode).catch(error => {
-      console.log(error)
-      return
+const getRecordList = async () => {
+    const result = await HttpManager.details().catch(error => {
+        console.log(error)
+        return
     })
-    if (!ret ?. success) {
-      console.log(ret ?.message)
-      return
+    if (!result ?.success) {
+        console.log(result ?.message)
+        return
     }
-    item.securityName = ret.data.name
-    item.currentPrice = ret.data.lastPrice
-    recordList.value.push(item)
-  });
-  recordList.value.sort((o1, o2) => o2.transactionDate - o1.transactionDate)
+
+    recordList.value = result.data
+
+    recordList.value.forEach(async (item) => {
+        const ret = await HttpManager.getMarketData(item.securityCode).catch(error => {
+            console.log(error)
+            return
+        })
+        if (!ret ?.success) {
+            console.log(ret ?.message)
+            return
+        }
+        item.securityName = ret.data.name
+        item.currentPrice = ret.data.lastPrice
+    });
+}
+
+const formatDateTime = (date_str) => {
+    // 如果未提供日期对象，则默认使用当前时间
+    const date = new Date(date_str)
+
+    // 获取年、月、日、时、分、秒
+    var year = date.getFullYear()
+    var month = ('0' + (date.getMonth() + 1)).slice(-2) // 月份从0开始，因此需要加1
+    var day = ('0' + date.getDate()).slice(-2)
+    var hours = ('0' + date.getHours()).slice(-2)
+    var minutes = ('0' + date.getMinutes()).slice(-2)
+    var seconds = ('0' + date.getSeconds()).slice(-2)
+
+    return year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds
 }
 
 onMounted(() => {
-  getAllTradeDetails()
+    getRecordList()
 })
 </script>
 
+  
 <style scoped>
-.v-stepper {
-    border-radius: 0;
-    box-shadow: 0 0;
+.filled {
+    color: blue;
 }
 
-.red {
-  background: linear-gradient(to right, #FFFFFF, #fcecee);
-  color: red;
+.cancelled,
+.buy {
+    color: red;
 }
 
-.red * {
-  background-color: rgba(152, 251, 152, 0); 
-  color: red;
-}
-.green {
-  background: linear-gradient(to right, #FFFFFF, #ebfceb);
-  color: green;
-}
-
-.green * {
-  background-color: rgba(152, 251, 152, 0); 
-  color: green;
+.active,
+.sell {
+    color: green;
 }
 </style>
