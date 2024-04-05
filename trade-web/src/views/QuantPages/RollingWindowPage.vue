@@ -29,13 +29,13 @@
                 </template>
             </v-slider>
             <br />
-            <v-slider label="LOW-RATIO" v-model="lowRatio" class="align-center" max="5" min="0" step="0.1" hide-details>
+            <v-slider label="LOW-RATIO(‰)" v-model="lowRatio" class="align-center" max="5" min="0" step="0.1" hide-details>
                 <template v-slot:append>
                     <v-text-field v-model="lowRatio" hide-details single-line density="compact" type="number" style="width: 56px" variant="underlined"></v-text-field>
                 </template>
             </v-slider>
             <br />
-            <v-slider label="HIGH-RATIO" v-model="highRatio" class="align-center" max="5" min="0" step="0.1" hide-details>
+            <v-slider label="HIGH-RATIO(‰)" v-model="highRatio" class="align-center" max="5" min="0" step="0.1" hide-details>
                 <template v-slot:append>
                     <v-text-field v-model="highRatio" hide-details single-line density="compact" type="number" style="width: 56px" variant="underlined"></v-text-field>
                 </template>
