@@ -65,13 +65,13 @@ public class LoginController {
 
     @ApiOperation(value = "找回密码", tags = "找回密码")
     @PostMapping("/findpassword")
-    public void findPassword(@RequestBody FindPswDto findPswDto) {
-        verifyService.findPassword(findPswDto);
+    public Object findPassword(@RequestBody FindPswDto findPswDto) {
+        return verifyService.findPassword(findPswDto);
     }
 
     @ApiOperation(value = "注册", tags = "注册")
     @PostMapping("/register")
-    public void register(@RequestBody RegisterDto registerDto) {
-        verifyService.register(registerDto);
+    public Object register(@RequestBody RegisterDto registerDto) {
+        return verifyService.register(registerDto);
     }
 }

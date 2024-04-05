@@ -16,7 +16,6 @@
             </v-window-item>
         </v-window>
     </v-card-text>
-
 </v-card>
 </template>
 

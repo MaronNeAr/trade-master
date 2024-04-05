@@ -241,7 +241,7 @@ onMounted(() => {
 <style scoped>
 .account-card {
     padding: 20px;
-    height: 600px;
+    height: 800px;
     overflow: scroll;
 }
 

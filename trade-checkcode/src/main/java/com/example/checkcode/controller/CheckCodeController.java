@@ -45,8 +45,8 @@ public class CheckCodeController {
     }
 
     @ApiOperation(value = "发送邮箱验证码", tags = "发送邮箱验证码")
-    @PostMapping("/phone")
-    public void sendEMail(@RequestParam("param1") String email) {
+    @PostMapping("/email")
+    public void sendEMail(String email) {
         String code = MailUtil.achieveCode();
         sendCodeService.sendEMail(email, code);
     }

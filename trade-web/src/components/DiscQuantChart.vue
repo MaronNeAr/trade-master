@@ -119,18 +119,18 @@ const option = {
     ]
 };
 
-watch(props.marketData, () => {
-    for (const code in props.marketData) {
-        x_axis.value = []
-        y_series.value = []
-        const marketList = props.marketData[code]
-        marketList.forEach(item => {
-            x_axis.value.push(new Date(item.createTime))
-            y_series.value.push(item.lastPrice)
-            in_series.value.push(item.insideDiff < -5000 ? 0 : item.insideDiff)
-            out_series.value.push(item.outsideDiff < -5000 ? 0 : item.outsideDiff)
-        });
-    }
+watch(() => props.marketData, () => {
+    x_axis.value = []
+    y_series.value = []
+    in_series.value = []
+    out_series.value = []
+    const marketList = props.marketData
+    marketList.forEach(item => {
+        x_axis.value.push(new Date(item.createTime))
+        y_series.value.push(item.lastPrice)
+        in_series.value.push(item.insideDiff < -5000 ? 0 : item.insideDiff)
+        out_series.value.push(item.outsideDiff < -5000 ? 0 : item.outsideDiff)
+    });
     if (x_axis.value.length == 0) return
     option.series[0].data = y_series.value
     option.series[1].data = in_series.value

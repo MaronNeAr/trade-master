@@ -1,8 +1,8 @@
 <template>
     <v-dialog v-model="dialog" width="500">
         <v-card>
-            <v-img :src="checkCodePic" width="160" height="100" @click="getCheckCode" />
-            <v-otp-input type="text" length="4" @finish="verifyCheckCode" v-model="checkcode"></v-otp-input>
+            <v-img :src="checkcodePic" width="160" height="100" @click="getCheckcode" />
+            <v-otp-input type="text" length="4" @finish="verifyCheckcode" v-model="checkcode"></v-otp-input>
         </v-card>
     </v-dialog>
 </template>
@@ -14,23 +14,23 @@ import {onMounted, ref, defineEmits, watch} from 'vue'
 const emits = defineEmits(['verify'])
 const dialog = ref(true)
 const checkcode = ref('')
-const checkCodeKey = ref()
-const checkCodePic = ref()
+const checkcodeKey = ref()
+const checkcodePic = ref()
 
-const getCheckCode = async() => {
-    const result = await HttpManager.getCheckCodePic().catch(error => {
+const getCheckcode = async() => {
+    const result = await HttpManager.getCheckcodePic().catch(error => {
         console.log(error)
         return
     })
-    if (result.key) checkCodeKey.value = result.key
-    if (result.aliasing) checkCodePic.value = result.aliasing
+    if (result.key) checkcodeKey.value = result.key
+    if (result.aliasing) checkcodePic.value = result.aliasing
 }
 
-const verifyCheckCode = async() =>{
+const verifyCheckcode = async() =>{
     const params = new URLSearchParams()
-    params.append("key", checkCodeKey.value)
+    params.append("key", checkcodeKey.value)
     params.append("code", checkcode.value)
-    const state = await HttpManager.verifyCheckCode(params).catch(error => {
+    const state = await HttpManager.verifyCheckcode(params).catch(error => {
         console.log(error)
         emits('verify', false)
         return
@@ -48,7 +48,7 @@ watch(dialog, () => {
 })
 
 onMounted(() => {
-    getCheckCode()
+    getCheckcode()
 })
 </script>
 

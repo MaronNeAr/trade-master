@@ -133,6 +133,26 @@ export function postByToken(url, data = {}) {
 }
 
 /**
+ * 封装postByToken请求
+ * @param url
+ * @param data
+ * @param token
+ * @returns {Promise}
+ */
+export function postByJson(url, data = {}) {
+  return new Promise((resolve, reject) => {
+    axios.post(url, data, { 
+      headers: { 
+        "Content-Type": "application/json"
+      } 
+}).then(
+      response => resolve(response.data),
+      error => reject(error)
+    );
+  });
+}
+
+/**
  * 封装delete请求
  * @param url
  * @param data
