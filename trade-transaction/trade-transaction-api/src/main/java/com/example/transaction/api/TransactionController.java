@@ -22,7 +22,7 @@ public class TransactionController {
     AuthService authService;
 
     @PostMapping("/r/buy")
-    public Object buy(@RequestParam("code") String code,
+    public Object buyCurrency(@RequestParam("code") String code,
                       @RequestParam("price") BigDecimal price,
                       @RequestParam("volume") Integer volume) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -101,7 +101,7 @@ public class TransactionController {
     }
 
     @PostMapping("/r/details")
-    public Object getAllTradeDetails(@RequestParam(value = "status", required = false) String status) throws InterruptedException {
+    public Object getTradeDetails(@RequestParam(value = "status", required = false) String status) throws InterruptedException {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String uid = authService.getUidByPrincipal(principal);
         if (uid == null) return new ErrorMessage("用户认证失败，请重新登录");
