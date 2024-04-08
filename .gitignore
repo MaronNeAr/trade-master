@@ -10,3 +10,6 @@
 /trade-checkcode/target/
 /trade-base/target/
 /trade-auth/target/
+/trade-web/dump.rdb
+*/.DS_Store
+.gitignore

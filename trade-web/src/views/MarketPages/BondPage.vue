@@ -225,6 +225,11 @@ watch(type, async (newType) => {
 })
 
 watch(securityCode, async (code) => {
+    getSecurityData(code)
+    // console.log(securityData.value)
+})
+
+const getSecurityData = async(code) => {
     if (code == undefined || code == null || code == "") return
     const result = await HttpManager.getMarketData(code).catch(error => {
         console.log(error)
@@ -243,8 +248,7 @@ watch(securityCode, async (code) => {
         item[1] = result.data['sell' + (idx + 1) + 'Volume']
     })
     securityData.value = result.data
-    // console.log(securityData.value)
-})
+}
 
 const getDefaultMarketList = async () => {
     let params = new URLSearchParams()
@@ -271,6 +275,9 @@ const getDefaultMarketList = async () => {
 
 onMounted(() => {
     getDefaultMarketList()
+    setInterval(() => {
+        getSecurityData(securityCode.value)
+    }, 3000);
 })
 </script>
 

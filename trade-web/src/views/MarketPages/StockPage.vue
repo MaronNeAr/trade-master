@@ -262,11 +262,11 @@ const getDefaultMarketList = async() => {
     if (securityList.value.length > 0) securityCode.value = securityList.value[0].value
 }
 
-
 onMounted(() => {
     getDefaultMarketList()
-    getSecurityData(securityCode.value)
-
+    setInterval(() => {
+        getSecurityData(securityCode.value)
+    }, 3000);
 }) 
 </script>
 

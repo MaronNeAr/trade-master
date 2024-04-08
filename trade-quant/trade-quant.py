@@ -7,7 +7,7 @@ import pandas as pd
 app = Flask(__name__)
 CORS(app, resources={r"/quant/*": {"origins": "*"}})
 
-con = pymysql.connect(host="127.0.0.1",user="root",password="123456",db="trade_transaction", init_command="SET time_zone = '+08:00'")
+con = pymysql.connect(host="127.0.0.1",user="root",password="12345678",db="trade_transaction", init_command="SET time_zone = '+08:00'")
 
 def query_market(code, start, end):
     return "SELECT * FROM transaction_market WHERE code = '" + code + "'AND create_time BETWEEN '" + start + "' AND '" + end + "';"
